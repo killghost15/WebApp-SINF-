@@ -592,5 +592,111 @@ namespace FirstREST.Lib_Primavera
         }
 
         #endregion DocsVenda
+
+        #region TransferenciaArmazem
+
+        public static Lib_Primavera.Model.RespostaErro TransfereArtigo(Model.ArtigoArmazem art )
+        {
+
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+
+
+            GcpBEArtigoArmazem myart = new GcpBEArtigoArmazem();
+
+            try
+            {
+                if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+                {
+
+                    myart.set_Artigo(art.ArtigoId);
+                    myart.set_Armazem(art.Armazem);
+                    myart.set_Localizacao(art.Localizacao);
+                    myart.set_StkActual(art.StockAtual);
+                    PriEngine.Engine.Comercial.ArtigosArmazens.Actualiza(myart);
+                    erro.Erro = 0;
+                    erro.Descricao = "Sucesso";
+                    return erro;
+                }
+                else
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "Erro ao abrir empresa";
+                    return erro;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                erro.Erro = 1;
+                erro.Descricao = ex.Message;
+                return erro;
+            }
+
+
+        }
+
+
+        public static List<Model.ArtigoArmazem> ListaArtigoArmazem() {
+             StdBELista objList;
+
+            List<Model.ArtigoArmazem> listartigos = new List<Model.ArtigoArmazem>();
+
+             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
+
+                objList = PriEngine.Engine.Consulta("select Artigo,Armazem,StkActual,Localizacao from ArtigoArmazem");
+
+                
+                while (!objList.NoFim())
+                {
+                    listartigos.Add(new Model.ArtigoArmazem
+                    {
+                        Localizacao = objList.Valor("Localizacao"),
+                        ArtigoId = objList.Valor("Artigo"),
+                        Armazem = objList.Valor("Armazem"),
+                        StockAtual = objList.Valor("StkActual")
+                    });
+                    objList.Seguinte();
+
+                }
+
+                return listartigos;
+            }
+            else
+                return null;
+        }
+
+       /* public static Model.ArtigoArmazem GetArtigoArmazem(string id)
+        {
+            GcpBEArtigoArmazem objartigo = new GcpBEArtigoArmazem();
+
+
+            Model.ArtigoArmazem myart = new Model.ArtigoArmazem();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                if (PriEngine.Engine.Comercial.ArtigosArmazens.Existe(id) == true)
+                {
+                    objartigo = PriEngine.Engine.Comercial.
+                    myart.CodCliente = objartigo.get_Cliente();
+                    myart.NomeCliente = objartigo.get_Nome();
+                    myart.Moeda = objartigo.get_Moeda();
+                    myart.NumContribuinte = objartigo.get_NumContribuinte();
+                    myart.Morada = objartigo.get_Morada();
+                    return myart;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+                return null;
+        }*/
+        #endregion TransferenciaArmazem
+
     }
 }
