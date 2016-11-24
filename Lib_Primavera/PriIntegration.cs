@@ -7,6 +7,7 @@ using Interop.StdPlatBS900;
 using Interop.StdBE900;
 using Interop.GcpBE900;
 using ADODB;
+using System.Text;
 
 namespace FirstREST.Lib_Primavera
 {
@@ -698,5 +699,135 @@ namespace FirstREST.Lib_Primavera
         }*/
         #endregion TransferenciaArmazem
 
+        #region DocVendaPCK
+
+        public static List<Model.DocVendaPCK> Encomendas_List_PCK(string tipoDoc, string serie, string estado)
+        {
+
+            StdBELista objListCab;
+            StdBELista objListLin;
+            Model.DocVendaPCK dv = new Model.DocVendaPCK();
+            List<Model.DocVendaPCK> listdv = new List<Model.DocVendaPCK>();
+            Model.LinhaDocVendaPCK lindv = new Model.LinhaDocVendaPCK();
+            List<Model.LinhaDocVendaPCK> listlindv = new List<Model.LinhaDocVendaPCK>();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
+                sql.Append("SELECT Id, Data, Entidade, TipoDoc, NumDoc, DataCarga, HoraCarga, Serie, Documento, Estado FROM cabecdoc CD inner join CabecDocStatus ST ON CD.id = ST.IdCabecDoc");
+                sql.Append(" WHERE TipoDoc='@1@'");
+                sql.Append(" AND Serie='@2@'");
+                sql.Append(" AND Estado='@3@'");
+
+                query = sql.ToString();
+                query = query.Replace("@1@", tipoDoc);
+                query = query.Replace("@2@", serie);
+                query = query.Replace("@3@", estado);
+
+
+                objListCab = PriEngine.Engine.Consulta(query);
+                while (!objListCab.NoFim())
+                {
+                    dv = new Model.DocVendaPCK();
+                    dv.Id = objListCab.Valor("Id");
+                    DateTime dt = objListCab.Valor("Data");
+                    dv.Data = dt.ToString("dd-MM-yyyy");
+                    dv.Entidade = objListCab.Valor("Entidade");
+                    dv.TipoDoc = objListCab.Valor("TipoDoc");
+                    int numDoc = objListCab.Valor("NumDoc");
+                    dv.NumDoc = Convert.ToString(numDoc);
+                    dv.DataCarga = objListCab.Valor("DataCarga");
+                    dv.HoraCarga = objListCab.Valor("HoraCarga");
+                    dv.Serie = objListCab.Valor("Serie");
+                    dv.Documento = objListCab.Valor("Documento");
+                    dv.Estado = objListCab.Valor("Estado");
+                    objListLin = PriEngine.Engine.Consulta("Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "' order By NumLinha");
+                    listlindv = new List<Model.LinhaDocVendaPCK>();
+
+                    while (!objListLin.NoFim())
+                    {
+                        lindv = new Model.LinhaDocVendaPCK();
+                        lindv.IdCabecDoc = objListLin.Valor("idCabecDoc");
+                        int numLinha = objListLin.Valor("NumLinha");
+                        lindv.NumLinha = Convert.ToString(numLinha);
+                        lindv.Artigo = objListLin.Valor("Artigo");
+                        double quantidade = objListLin.Valor("Quantidade");
+                        lindv.Quantidade = Convert.ToString(quantidade);
+                        lindv.Seccao = objListLin.Valor("Seccao");
+                        lindv.Armazem = objListLin.Valor("Armazem");
+                        lindv.Localizacao = objListLin.Valor("Localizacao");
+                        lindv.Lote = objListLin.Valor("Lote");
+                        lindv.Descricao = objListLin.Valor("Descricao");
+                        lindv.Id = objListLin.Valor("Id");
+                        lindv.Unidade = objListLin.Valor("Unidade");
+                        double quantTrans = objListLin.Valor("QuantTrans");
+                        lindv.QuantTrans = Convert.ToString(quantTrans);
+                        lindv.EstadoTrans = objListLin.Valor("EstadoTrans");
+
+                        listlindv.Add(lindv);
+                        objListLin.Seguinte();
+                    }
+
+                    dv.LinhasDoc = listlindv;
+                    listdv.Add(dv);
+                    objListCab.Seguinte();
+                }
+            }
+            return listdv;
+        }
+
+        #endregion
+
+        #region GuiaDeRemessa
+
+        public static Model.RespostaErro GuiaDeRemessa_New(Model.CriaGuiaDeRemessa gr)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            GcpBEDocumentoVenda ecl = new GcpBEDocumentoVenda();
+            GcpBEDocumentoVenda new_gr = new GcpBEDocumentoVenda();
+
+            try
+            {
+                if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+                {
+                    ecl = PriEngine.Engine.Comercial.Vendas.Edita(gr.Filial, gr.TipoDoc, gr.Serie, gr.NumDoc);
+
+                    PriEngine.Engine.IniciaTransaccao();
+                    GcpBEDocumentoVenda[] a = new GcpBEDocumentoVenda[] { ecl };
+                    new_gr.set_Serie(gr.Serie);
+                    new_gr.set_Tipodoc("GR");
+                    new_gr.set_TipoEntidade(gr.TipoEntidade);
+                    new_gr.set_Entidade(gr.Entidade);
+                    PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(new_gr);
+                    Boolean dadosR = true;
+                    PriEngine.Engine.Comercial.Vendas.TransformaDocumentoEX(a, new_gr, dadosR);
+                    PriEngine.Engine.TerminaTransaccao();
+                    erro.Erro = 0;
+                    erro.Descricao = "Sucesso";
+                    return erro;
+                }
+                else
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "Erro ao abrir empresa";
+                    return erro;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                PriEngine.Engine.DesfazTransaccao();
+                erro.Erro = 2;
+                erro.Descricao = ex.Message;
+                return erro;
+            }
+            //return erro;
+        }
+
+        #endregion
     }
 }
