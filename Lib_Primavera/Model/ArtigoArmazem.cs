@@ -16,7 +16,7 @@ namespace FirstREST.Lib_Primavera.Model
             get;
             set;
         }
-        public int StockAtual
+        public double StockAtual
         {
             get;
             set;
