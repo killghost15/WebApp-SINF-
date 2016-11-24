@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Encomenda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Encomenda</h2>
+
+<table>
+   @foreach (var encomenda in ViewBag.encomendas)
+   {
+
+    <tr>
+        <td>@encomenda.Id</td>
+    </tr>
+
+   }
+</table>
