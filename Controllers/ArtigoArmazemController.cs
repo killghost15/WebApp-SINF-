@@ -25,7 +25,11 @@ namespace FirstREST.Controllers
              {
                  var response = Request.CreateResponse(
                     HttpStatusCode.Created, art);
-                 string uri = Url.Link("DefaultApi", new {  CodArtigo = art.ArtigoId });
+                 string uri = Url.Link("DefaultApi", new {  CodArtigo = art.ArtigoId,
+                                                            Localizacao = art.Localizacao,
+                                                            Armazem =art.Armazem,
+                                                            Stck=art.StockAtual
+                 });
                  response.Headers.Location = new Uri(uri);
                  return response;
              }

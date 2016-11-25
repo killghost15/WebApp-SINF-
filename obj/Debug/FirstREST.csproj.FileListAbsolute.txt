@@ -62,6 +62,7 @@ C:\Users\user\Desktop\Sinf\WebApp-SINF-\bin\System.Web.Razor.xml
 C:\Users\user\Desktop\Sinf\WebApp-SINF-\bin\System.Web.WebPages.xml
 C:\Users\user\Desktop\Sinf\WebApp-SINF-\bin\System.Web.WebPages.Deployment.xml
 C:\Users\user\Desktop\Sinf\WebApp-SINF-\bin\System.Web.WebPages.Razor.xml
+<<<<<<< HEAD
 C:\Users\user\Desktop\WebApp-SINF-\bin\FirstREST.dll.config
 C:\Users\user\Desktop\WebApp-SINF-\bin\FirstREST.dll
 C:\Users\user\Desktop\WebApp-SINF-\bin\FirstREST.pdb
@@ -94,3 +95,37 @@ C:\Users\user\Desktop\WebApp-SINF-\bin\System.Web.WebPages.Razor.xml
 C:\Users\user\Desktop\WebApp-SINF-\obj\Debug\FirstREST.csprojResolveAssemblyReference.cache
 C:\Users\user\Desktop\WebApp-SINF-\obj\Debug\FirstREST.dll
 C:\Users\user\Desktop\WebApp-SINF-\obj\Debug\FirstREST.pdb
+=======
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\FirstREST.dll.config
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\FirstREST.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\FirstREST.pdb
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\Antlr3.Runtime.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\Newtonsoft.Json.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Net.Http.Formatting.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Helpers.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Http.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Http.WebHost.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Mvc.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Optimization.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Razor.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.WebPages.Deployment.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.WebPages.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.WebPages.Razor.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\WebGrease.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\Antlr3.Runtime.pdb
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\Newtonsoft.Json.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Net.Http.Formatting.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Http.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Http.WebHost.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Optimization.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Helpers.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Mvc.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.Razor.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.WebPages.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.WebPages.Deployment.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\bin\System.Web.WebPages.Razor.xml
+C:\Users\user\Documents\GitHub\WebApp-SINF-\obj\Debug\FirstREST.csprojResolveAssemblyReference.cache
+C:\Users\user\Documents\GitHub\WebApp-SINF-\obj\Debug\FirstREST.dll
+C:\Users\user\Documents\GitHub\WebApp-SINF-\obj\Debug\FirstREST.pdb
+>>>>>>> c408e2ee89c154defd9c34a3d77f136eac368dea

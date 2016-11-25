@@ -12,5 +12,12 @@ namespace FirstREST.Controllers
         {
             return View();
         }
+
+        public ActionResult Encomenda(string tipoDoc, string serie, string estado)
+        {
+            EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
+            ViewBag.encomendas = cont.Get(tipoDoc,serie,estado);
+            return View();
+        }
     }
 }

@@ -728,7 +728,6 @@ namespace FirstREST.Lib_Primavera
                 query = query.Replace("@2@", serie);
                 query = query.Replace("@3@", estado);
 
-
                 objListCab = PriEngine.Engine.Consulta(query);
                 while (!objListCab.NoFim())
                 {
