@@ -835,28 +835,23 @@ namespace FirstREST.Lib_Primavera
         public static Model.RespostaErro TransfereItemPickingArea(Model.TransItemPckArea artigo)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            GcpBEDocumentoStock documento = new GcpBEDocumentoStock();
 
             try
             {
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
                 {
-                    //PriEngine.Engine.Comercial.Stocks.SugereArtigoLinhas()
-
                     var data = DateTime.Now;
-                    GcpBEDocumentoStock documento = new GcpBEDocumentoStock();
-
                     documento.set_Tipodoc("TRA");
                     documento.set_Serie(artigo.serie);
-                   // documento.set_TipoEntidade(artigo.TipoEntidade);
             
-        
+
                     documento.set_ArmazemOrigem(artigo.ArmazemSaida);
-                    //documento.set_DataDoc(data);
+                    documento.set_DataDoc(data);
 
                     GcpBELinhasDocumentoStock lines = new GcpBELinhasDocumentoStock();
                     GcpBELinhasDocumentoStock item_lines = new GcpBELinhasDocumentoStock();
-                    PriEngine.Engine.Comercial.Stocks.AdicionaLinha(documento, Artigo: artigo.Artigo.CodArtigo, Quantidade: artigo.Quantidade, Armazem: artigo.ArmazemEntrada, Localizacao: artigo.LocalizacaoEntrada);
-                    //item_lines = PriEngine.Engine.Comercial.Stocks.SugereArtigoLinhas(Artigo: artigo.Artigo.CodArtigo, Quantidade: artigo.Quantidade, Armazem: artigo.ArmazemEntrada, Localizacao: artigo.LocalizacaoEntrada, TipoDocStock: artigo.TipoDoc);            
+                    PriEngine.Engine.Comercial.Stocks.AdicionaLinha(documento, Artigo: artigo.Artigo.CodArtigo, Quantidade: artigo.Quantidade, Armazem: artigo.ArmazemEntrada, Localizacao: artigo.LocalizacaoEntrada);           
                     item_lines = documento.get_Linhas();
 
                     for (var i = 1; i <= item_lines.NumItens; ++i)
@@ -867,10 +862,11 @@ namespace FirstREST.Lib_Primavera
                         lines.Insere(line);
                     }
 
-                    //documento.set_Linhas(lines);
                     var avisos = String.Empty;
                     PriEngine.Engine.Comercial.Stocks.PreencheDadosRelacionados(documento);
+                    PriEngine.Engine.IniciaTransaccao();
                     PriEngine.Engine.Comercial.Stocks.Actualiza(documento, ref avisos);
+                    PriEngine.Engine.TerminaTransaccao();
 
                     erro.Descricao = avisos;
                 }
