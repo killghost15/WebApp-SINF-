@@ -836,42 +836,73 @@ namespace FirstREST.Lib_Primavera
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
 
-            //PriEngine.Engine.Comercial.Stocks.SugereArtigoLinhas()
+            try
+            {
+                if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+                {
+                    //PriEngine.Engine.Comercial.Stocks.SugereArtigoLinhas()
 
-            var data = DateTime.Now;
-            GcpBEDocumentoStock documento = new GcpBEDocumentoStock();
+                    var data = DateTime.Now;
+                    GcpBEDocumentoStock documento = new GcpBEDocumentoStock();
 
-            documento.set_Tipodoc("TRA");
-            documento.set_Serie(artigo.serie);
-           // documento.set_TipoEntidade(artigo.TipoEntidade);
+                    documento.set_Tipodoc("TRA");
+                    documento.set_Serie(artigo.serie);
+                   // documento.set_TipoEntidade(artigo.TipoEntidade);
             
         
-            documento.set_ArmazemOrigem(artigo.ArmazemSaida);
-            documento.set_DataDoc(data);
+                    documento.set_ArmazemOrigem(artigo.ArmazemSaida);
+                    //documento.set_DataDoc(data);
 
-            GcpBELinhasDocumentoStock lines = new GcpBELinhasDocumentoStock();
-            GcpBELinhasDocumentoStock item_lines = new GcpBELinhasDocumentoStock();
-            item_lines = PriEngine.Engine.Comercial.Stocks.SugereArtigoLinhas(Artigo: artigo.Artigo.CodArtigo, Quantidade: artigo.Quantidade, Armazem: artigo.ArmazemEntrada, Localizacao: artigo.LocalizacaoEntrada, TipoDocStock: artigo.TipoDoc);
-           
-            for (var i = 1; i <= item_lines.NumItens; ++i)
-            {
-                var line = item_lines.get_Edita(i);
-                line.set_LocalizacaoOrigem(artigo.LocalizacaoSaida);
-                line.set_DataStock(data);
-                lines.Insere(line);
+                    GcpBELinhasDocumentoStock lines = new GcpBELinhasDocumentoStock();
+                    GcpBELinhasDocumentoStock item_lines = new GcpBELinhasDocumentoStock();
+                    PriEngine.Engine.Comercial.Stocks.AdicionaLinha(documento, Artigo: artigo.Artigo.CodArtigo, Quantidade: artigo.Quantidade, Armazem: artigo.ArmazemEntrada, Localizacao: artigo.LocalizacaoEntrada);
+                    //item_lines = PriEngine.Engine.Comercial.Stocks.SugereArtigoLinhas(Artigo: artigo.Artigo.CodArtigo, Quantidade: artigo.Quantidade, Armazem: artigo.ArmazemEntrada, Localizacao: artigo.LocalizacaoEntrada, TipoDocStock: artigo.TipoDoc);            
+                    item_lines = documento.get_Linhas();
+
+                    for (var i = 1; i <= item_lines.NumItens; ++i)
+                    {
+                        var line = item_lines.get_Edita(i);
+                        line.set_LocalizacaoOrigem(artigo.LocalizacaoSaida);
+                        line.set_DataStock(data);
+                        lines.Insere(line);
+                    }
+
+                    //documento.set_Linhas(lines);
+                    var avisos = String.Empty;
+                    PriEngine.Engine.Comercial.Stocks.PreencheDadosRelacionados(documento);
+                    PriEngine.Engine.Comercial.Stocks.Actualiza(documento, ref avisos);
+
+                    erro.Descricao = avisos;
+                }
+                else
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "Erro ao abrir empresa";
+                    return erro;
+
+                }
+
             }
-
-
-
-            documento.set_Linhas(lines);
-            var avisos = String.Empty;
-            PriEngine.Engine.Comercial.Stocks.PreencheDadosRelacionados(documento);
-            PriEngine.Engine.Comercial.Stocks.Actualiza(documento, ref avisos);
-
-            erro.Descricao = avisos;
-
+            catch (Exception ex)
+            {
+                PriEngine.Engine.DesfazTransaccao();
+                erro.Erro = 2;
+                erro.Descricao = ex.Message;
+                return erro;
+            }
             return erro;
         }
+
+        #endregion
+
+        #region Picking
+
+        //public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> )
+        //{
+        //    Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+
+        //    return erro;
+        //}
 
         #endregion
     }
