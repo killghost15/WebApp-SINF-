@@ -853,6 +853,38 @@ namespace FirstREST.Lib_Primavera
             return listdv;
         }
 
+        public static List<String> Encomendas_List_PCK_Dates()
+        {
+
+            StdBELista objListCab;
+            List<String> listdv = new List<String>();
+   
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
+                sql.Append("SELECT DISTINCT DataCarga FROM cabecdoc ");
+                sql.Append("ORDER BY DataCarga");
+
+
+                query = sql.ToString();
+      
+
+                objListCab = PriEngine.Engine.Consulta(query);
+                while (!objListCab.NoFim())
+                {
+                    String DataCarga = objListCab.Valor("DataCarga");
+                   
+                    listdv.Add(DataCarga);
+                    objListCab.Seguinte();
+                }
+            }
+            return listdv;
+        }
+
         #endregion
 
         #region GuiaDeRemessa

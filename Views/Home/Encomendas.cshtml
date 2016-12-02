@@ -7,6 +7,11 @@
     <h3>Encomendas</h3>
 </div>
 
+<select>
+@foreach (var data in ViewBag.datas) {
+    <option value="@data">@data</option>
+}
+</select>
 
 <table class="table-fill">
     <thead>
