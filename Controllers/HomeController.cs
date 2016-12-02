@@ -10,14 +10,14 @@ namespace FirstREST.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return View("/Views/Home/Index.cshtml");
         }
 
         public ActionResult Encomenda(string tipoDoc, string serie, string estado)
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
             ViewBag.encomendas = cont.Get(tipoDoc,serie,estado);
-            return View();
+            return View("/Views/Home/Encomenda.cshtml");
         }
     }
 }

@@ -23,7 +23,9 @@ namespace FirstREST
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include(
+                        "~/Content/Site.css",
+                        "~/Content/styles.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
@@ -38,6 +40,18 @@ namespace FirstREST
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+            // ----------------------------------------------------------------------------------
+
+            // Bundle for rendering our own scripts --------- SINF
+            bundles.Add(new ScriptBundle("~/bundles/SINFjs").Include(
+                        "~/Scripts/SINFscripts/navbar_dropdown.js",
+                        "~/Scripts/SINFscripts/carousel_autoplay.js"));
+
+            // Bundle for rendering our own css --------- SINF
+            bundles.Add(new StyleBundle("~/Content/SINFcss").Include(
+                        "~/Content/SINFcss/navbar_dropdown.css",
+                        "~/Content/SINFcss/carousel.css"));
         }
     }
 }

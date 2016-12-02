@@ -1,8 +1,6 @@
 ﻿
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
-.navbar-brand { position: relative; z-index: 2; }
-
 .navbar-nav.navbar-right .btn { position: relative; z-index: 2; padding: 4px 20px; margin: 10px auto; }
 
 .navbar .navbar-collapse { position: relative; }
@@ -64,7 +62,7 @@ th:last-child {
   
 tr {
   border-top: 1px solid #C1C3D1;
-  border-bottom-: 1px solid #C1C3D1;
+  border-bottom: 1px solid #C1C3D1;
   color:#666B85;
   font-size:16px;
   font-weight:normal;

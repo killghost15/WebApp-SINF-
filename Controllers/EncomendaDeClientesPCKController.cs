@@ -12,7 +12,7 @@ namespace FirstREST.Controllers
     {
 
         //
-        // GET: //
+        // GET: /api/encomendadeclientespck?tipoDoc=ECL&serie=2016&estado=P
 
         public IEnumerable<Lib_Primavera.Model.DocVendaPCK> Get(string tipoDoc, string serie, string estado)
         {
