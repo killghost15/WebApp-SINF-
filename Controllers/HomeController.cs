@@ -16,7 +16,8 @@ namespace FirstREST.Controllers
         public ActionResult Encomendas(string tipoDoc, string serie, string estado)
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
-            ViewBag.encomendas = cont.Get(tipoDoc,serie,estado);
+            ViewBag.encomendas = cont.Get(tipoDoc, serie, estado); ;
+            ViewBag.datas = cont.GetDates();
             return View("/Views/Home/Encomendas.cshtml");
         }
 
