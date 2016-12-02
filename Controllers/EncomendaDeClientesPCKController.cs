@@ -18,5 +18,12 @@ namespace FirstREST.Controllers
         {
             return Lib_Primavera.PriIntegration.Encomendas_List_PCK(tipoDoc, serie, estado);
         }
+
+        // GET: /api/encomendadeclientespck?id=blabla
+
+        public IEnumerable<Lib_Primavera.Model.DocVendaPCK> Get(string id)
+        {
+            return Lib_Primavera.PriIntegration.Encomendas_List_PCK(id);
+        }
     }
 }

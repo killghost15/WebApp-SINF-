@@ -4,35 +4,39 @@
 }
 
 <div class="table-title">
-    <h3>Encomendas</h3>
+    <h3>Encomenda de @ViewBag.encomenda[0].Entidade</h3>
+    Entrega: @ViewBag.encomenda[0].DataCarga @ViewBag.encomenda[0].HoraCarga
 </div>
-
 
 <table class="table-fill">
     <thead>
         <tr class="text-left">
-            <th>Data</th>
-            <th>Entidade</th>
-            <th>NumDock</th>
-            <th>DataCarga</th>
-            <th>HoraCarga</th>
-            <th>Serie</th>
-            <th>Documento</th>
-            <th>Estado</th>
+            <th>Artigo</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Secção</th>
+            <th>Armazem</th>
+            <th>Localização</th>
+            <th>Lote</th>
+            <th>Unidade</th>
+            <th>QuantTrans</th>
+            <th>EstadoTrans</th>
         </tr>
-   </thead>
+    </thead>
     <tbody class="table-hover">
-        @foreach (var encomenda in ViewBag.encomendas)
+        @foreach (var produto in ViewBag.encomenda[0].LinhasDoc)
         {
             <tr>
-                <td>@encomenda.Data</td>
-                <td>@encomenda.Entidade</td>
-                <td>@encomenda.NumDoc</td>
-                <td>@encomenda.DataCarga</td>
-                <td>@encomenda.HoraCarga</td>
-                <td>@encomenda.Serie</td>
-                <td>@encomenda.Documento</td>
-                <td>@encomenda.Estado</td>
+                <td>@produto.Artigo</td>
+                <td>@produto.Descricao</td>
+                <td>@produto.Quantidade</td>
+                <td>@produto.Seccao</td>
+                <td>@produto.Armazem</td>
+                <td>@produto.Localizacao</td>
+                <td>@produto.Lote</td>
+                <td>@produto.Unidade</td>
+                <td>@produto.QuantTrans</td>
+                <td>@produto.EstadoTrans</td>
             </tr>
         }
     </tbody>

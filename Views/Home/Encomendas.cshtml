@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Encomendas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="table-title">
+    <h3>Encomendas</h3>
+</div>
+
+
+<table class="table-fill">
+    <thead>
+        <tr class="text-left">
+            <th>Data</th>
+            <th>Entidade</th>
+            <th>NumDock</th>
+            <th>DataCarga</th>
+            <th>HoraCarga</th>
+            <th>Serie</th>
+            <th>Documento</th>
+            <th>Estado</th>
+ 
+        </tr>
+   </thead>
+    <tbody class="table-hover">
+        @foreach (var encomenda in ViewBag.encomendas)
+        {
+            <tr onmouseover="" style="cursor: pointer;"  onclick="location.href = '/home/encomenda?id=@encomenda.Id';">
+                <td>@encomenda.Data</td>
+                <td>@encomenda.Entidade</td>
+                <td>@encomenda.NumDoc</td>
+                <td>@encomenda.DataCarga</td>
+                <td>@encomenda.HoraCarga</td>
+                <td>@encomenda.Serie</td>
+                <td>@encomenda.Documento</td>
+                <td>@encomenda.Estado</td>
+            </tr>
+        }
+    </tbody>
+</table>

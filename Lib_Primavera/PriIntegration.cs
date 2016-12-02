@@ -779,6 +779,80 @@ namespace FirstREST.Lib_Primavera
             return listdv;
         }
 
+        public static List<Model.DocVendaPCK> Encomendas_List_PCK(string id)
+        {
+
+            StdBELista objListCab;
+            StdBELista objListLin;
+            Model.DocVendaPCK dv = new Model.DocVendaPCK();
+            List<Model.DocVendaPCK> listdv = new List<Model.DocVendaPCK>();
+            Model.LinhaDocVendaPCK lindv = new Model.LinhaDocVendaPCK();
+            List<Model.LinhaDocVendaPCK> listlindv = new List<Model.LinhaDocVendaPCK>();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
+                sql.Append("SELECT Id, Data, Entidade, TipoDoc, NumDoc, DataCarga, HoraCarga, Serie, Documento, Estado FROM cabecdoc CD inner join CabecDocStatus ST ON CD.id = ST.IdCabecDoc");
+                sql.Append(" WHERE Id='@1@'");
+ 
+
+                query = sql.ToString();
+                query = query.Replace("@1@", id);
+
+                objListCab = PriEngine.Engine.Consulta(query);
+                while (!objListCab.NoFim())
+                {
+                    dv = new Model.DocVendaPCK();
+                    dv.Id = objListCab.Valor("Id");
+                    DateTime dt = objListCab.Valor("Data");
+                    dv.Data = dt.ToString("dd-MM-yyyy");
+                    dv.Entidade = objListCab.Valor("Entidade");
+                    dv.TipoDoc = objListCab.Valor("TipoDoc");
+                    int numDoc = objListCab.Valor("NumDoc");
+                    dv.NumDoc = Convert.ToString(numDoc);
+                    dv.DataCarga = objListCab.Valor("DataCarga");
+                    dv.HoraCarga = objListCab.Valor("HoraCarga");
+                    dv.Serie = objListCab.Valor("Serie");
+                    dv.Documento = objListCab.Valor("Documento");
+                    dv.Estado = objListCab.Valor("Estado");
+                    objListLin = PriEngine.Engine.Consulta("Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "' order By NumLinha");
+                    listlindv = new List<Model.LinhaDocVendaPCK>();
+
+                    while (!objListLin.NoFim())
+                    {
+                        lindv = new Model.LinhaDocVendaPCK();
+                        lindv.IdCabecDoc = objListLin.Valor("idCabecDoc");
+                        int numLinha = objListLin.Valor("NumLinha");
+                        lindv.NumLinha = Convert.ToString(numLinha);
+                        lindv.Artigo = objListLin.Valor("Artigo");
+                        double quantidade = objListLin.Valor("Quantidade");
+                        lindv.Quantidade = Convert.ToString(quantidade);
+                        lindv.Seccao = objListLin.Valor("Seccao");
+                        lindv.Armazem = objListLin.Valor("Armazem");
+                        lindv.Localizacao = objListLin.Valor("Localizacao");
+                        lindv.Lote = objListLin.Valor("Lote");
+                        lindv.Descricao = objListLin.Valor("Descricao");
+                        lindv.Id = objListLin.Valor("Id");
+                        lindv.Unidade = objListLin.Valor("Unidade");
+                        double quantTrans = objListLin.Valor("QuantTrans");
+                        lindv.QuantTrans = Convert.ToString(quantTrans);
+                        lindv.EstadoTrans = objListLin.Valor("EstadoTrans");
+
+                        listlindv.Add(lindv);
+                        objListLin.Seguinte();
+                    }
+
+                    dv.LinhasDoc = listlindv;
+                    listdv.Add(dv);
+                    objListCab.Seguinte();
+                }
+            }
+            return listdv;
+        }
+
         #endregion
 
         #region GuiaDeRemessa
