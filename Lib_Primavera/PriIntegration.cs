@@ -13,8 +13,6 @@ namespace FirstREST.Lib_Primavera
 {
     public class PriIntegration
     {
-
-
         # region Cliente
 
         public static List<Model.Cliente> ListaClientes()
@@ -235,7 +233,6 @@ namespace FirstREST.Lib_Primavera
 
         #endregion Cliente;   // -----------------------------  END   CLIENTE    -----------------------
 
-
         #region Artigo
 
         public static Lib_Primavera.Model.Artigo GetArtigo(string codArtigo)
@@ -303,8 +300,6 @@ namespace FirstREST.Lib_Primavera
         }
 
         #endregion Artigo
-
-
 
         #region DocCompra
 
@@ -424,7 +419,6 @@ namespace FirstREST.Lib_Primavera
 
 
         #endregion DocCompra
-
 
         #region DocsVenda
 
@@ -847,38 +841,6 @@ namespace FirstREST.Lib_Primavera
 
                     dv.LinhasDoc = listlindv;
                     listdv.Add(dv);
-                    objListCab.Seguinte();
-                }
-            }
-            return listdv;
-        }
-
-        public static List<String> Encomendas_List_PCK_Dates()
-        {
-
-            StdBELista objListCab;
-            List<String> listdv = new List<String>();
-   
-
-            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
-            {
-                StringBuilder sql = new StringBuilder();
-                string query = string.Empty;
-
-                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
-                sql.Append("SELECT DISTINCT DataCarga FROM cabecdoc ");
-                sql.Append("ORDER BY DataCarga");
-
-
-                query = sql.ToString();
-      
-
-                objListCab = PriEngine.Engine.Consulta(query);
-                while (!objListCab.NoFim())
-                {
-                    String DataCarga = objListCab.Valor("DataCarga");
-                   
-                    listdv.Add(DataCarga);
                     objListCab.Seguinte();
                 }
             }

@@ -3,43 +3,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="table-title">
-    <h3>Encomendas</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h3 class="panel-title">Encomendas</h3>
+                <div class="pull-right">
+                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="filters">
+                        <th><input type="text" class="form-control" placeholder="Data" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Entidade" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="NumDock" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="DataCarga" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="HoraCarga" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Série" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Documento" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Estado" disabled></th>
+                    </tr>
+                </thead>
+                <tbody class="table-hover">
+                    @foreach (var encomenda in ViewBag.encomendas) {
+                        <tr onmouseover="" style="cursor: pointer;" onclick="location.href = '/home/encomenda?id=@encomenda.Id';">
+                            <td>@encomenda.Data</td>
+                            <td>@encomenda.Entidade</td>
+                            <td>@encomenda.NumDoc</td>
+                            <td>@encomenda.DataCarga</td>
+                            <td>@encomenda.HoraCarga</td>
+                            <td>@encomenda.Serie</td>
+                            <td>@encomenda.Documento</td>
+                            <td>@encomenda.Estado</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
-<select>
-@foreach (var data in ViewBag.datas) {
-    <option value="@data">@data</option>
-}
-</select>
-
-<table class="table-fill">
-    <thead>
-        <tr class="text-left">
-            <th>Data</th>
-            <th>Entidade</th>
-            <th>NumDock</th>
-            <th>DataCarga</th>
-            <th>HoraCarga</th>
-            <th>Serie</th>
-            <th>Documento</th>
-            <th>Estado</th>
- 
-        </tr>
-   </thead>
-    <tbody class="table-hover">
-        @foreach (var encomenda in ViewBag.encomendas)
-        {
-            <tr onmouseover="" style="cursor: pointer;"  onclick="location.href = '/home/encomenda?id=@encomenda.Id';">
-                <td>@encomenda.Data</td>
-                <td>@encomenda.Entidade</td>
-                <td>@encomenda.NumDoc</td>
-                <td>@encomenda.DataCarga</td>
-                <td>@encomenda.HoraCarga</td>
-                <td>@encomenda.Serie</td>
-                <td>@encomenda.Documento</td>
-                <td>@encomenda.Estado</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<br/><br/>

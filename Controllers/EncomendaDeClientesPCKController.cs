@@ -26,10 +26,5 @@ namespace FirstREST.Controllers
             return Lib_Primavera.PriIntegration.Encomendas_List_PCK(id);
         }
 
-
-        public IEnumerable<String> GetDates()
-        {
-            return Lib_Primavera.PriIntegration.Encomendas_List_PCK_Dates();
-        }
     }
 }

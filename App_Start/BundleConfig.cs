@@ -46,12 +46,14 @@ namespace FirstREST
             // Bundle for rendering our own scripts --------- SINF
             bundles.Add(new ScriptBundle("~/bundles/SINFjs").Include(
                         "~/Scripts/SINFscripts/navbar_dropdown.js",
-                        "~/Scripts/SINFscripts/carousel_autoplay.js"));
+                        "~/Scripts/SINFscripts/carousel_autoplay.js",
+                        "~/Scripts/SINFscripts/table_filter.js"));
 
             // Bundle for rendering our own css --------- SINF
             bundles.Add(new StyleBundle("~/Content/SINFcss").Include(
                         "~/Content/SINFcss/navbar_dropdown.css",
-                        "~/Content/SINFcss/carousel.css"));
+                        "~/Content/SINFcss/carousel.css",
+                        "~/Content/SINFcss/table_filter.css"));
         }
     }
 }
