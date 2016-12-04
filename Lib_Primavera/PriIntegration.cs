@@ -899,7 +899,56 @@ namespace FirstREST.Lib_Primavera
         #endregion
 
         #region xico
+        public static Model.RespostaErro VerificaTransf(Model.TransItemPckArea artigo) {
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            List<Model.ArtigoArmazem> listartigos = new List<Model.ArtigoArmazem>();
+            StdBELista objList;
 
+            try
+            {
+                if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+                {
+                    
+
+                    StringBuilder sql = new StringBuilder();
+                    string query = string.Empty;
+
+                    sql.Append("select Artigo,Armazem,StkActual,Localizacao from ArtigoArmazem");
+                    sql.Append(" WHERE Artigo='@1@'");
+                    sql.Append(" AND Localizacao='@2@'");
+
+                    
+
+                    query = sql.ToString();
+                    query = query.Replace("@1@", artigo.Artigo.CodArtigo);
+                    query=query.Replace("@2@", artigo.LocalizacaoEntrada);
+                    objList = PriEngine.Engine.Consulta(query);
+                   
+                    if (objList==null) {
+                        erro.Erro = 1;
+                        erro.Descricao = "Não existe a localização com esse artigo ou não existe esse artigo sequer";
+                    
+                    }
+                }
+             else
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "Erro ao abrir empresa";
+                    return erro;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                
+                erro.Erro = 2;
+                erro.Descricao = ex.Message;
+                return erro;
+            }
+
+            return erro;
+        }
         public static Model.RespostaErro TransfereItemPickingArea(Model.TransItemPckArea artigo)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
@@ -967,7 +1016,10 @@ namespace FirstREST.Lib_Primavera
 
         //    return erro;
         //}
+        /*
 
+        public static Model.RespostaErro GeneratePickingList(
+        */
         #endregion
     }
 }
