@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Transferência de Armazém";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style type="text/css">
+    /* Adjust feedback icon position */
+    #productForm .selectContainer .form-control-feedback,
+    #productForm .inputGroupContainer .form-control-feedback {
+        right: -15px;
+    }
+</style>
+
+<form id="productForm" method="post" class="form-horizontal">
+    <br /><br />
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Artigo a transferir</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <select class="form-control" name="size" id="select_artigo">
+                <option>Selecione um artigo para efetuar a transferência</option>
+                @foreach (var artigo in ViewBag.artigosArmazem) {
+                    <option value="@artigo.ArtigoId">@artigo.ArtigoId</option>
+                }
+            </select>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#select_artigo').change(function () {
+                var artigo_selecionado = $('#select_artigo').val();
+
+                var artigosId_string = "@ViewBag.artigosId";
+                var artigosLocalizacao_string = "@ViewBag.artigosLocalizacao";
+
+                // Clear the combo box for the origin location each time the first one is changed
+                $('#select_localizacaoOrigem').html('');
+
+                // Split the strings
+                var artigosId_array = artigosId_string.split(",");
+                var artigosLocalizacao_array = artigosLocalizacao_string.split(",");
+
+                console.log(artigosId_string);
+                console.log(artigosLocalizacao_string);
+
+                console.log(artigosId_array[6]);
+                console.log(artigosLocalizacao_array[8]);
+
+                var localizacoes_new = [];
+
+                for (var i = 0; i < 135; i++) {
+                    if (artigosId_array[i] == artigo_selecionado) {
+                        $('#select_localizacaoOrigem').append('<option>' + artigosLocalizacao_array[i] + '</option>');
+                    }
+                }
+
+            });
+        });
+    </script>
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Localização de origem</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <select class="form-control" name="color" id="select_localizacaoOrigem"></select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Localização de destino</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <select class="form-control" name="size" id="select_localizacaoDestino"></select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Quantidade a transferir</label>
+        <div class="col-xs-5" style="width: 65%">
+            <input type="text" class="form-control" name="name" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-xs-5 col-xs-offset-3">
+            <button type="submit" class="btn btn-default">Efetuar transferência</button>
+        </div>
+    </div>
+</form>

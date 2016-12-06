@@ -13,6 +13,27 @@ namespace FirstREST.Controllers
             return View("/Views/Home/Index.cshtml");
         }
 
+        public ActionResult TransferenciaArmazem()
+        {
+            ArtigoArmazemController cont = new ArtigoArmazemController();
+            
+            ViewBag.artigosArmazem = cont.Get();
+            var lista_artigos = ViewBag.artigosArmazem;
+
+            string artigos_id = "";
+            string artigos_localizacao = "";
+
+            foreach (var artigo in lista_artigos) {
+                artigos_id = artigos_id + artigo.ArtigoId + ",";
+                artigos_localizacao = artigos_localizacao + artigo.Localizacao + ",";
+            }
+
+            ViewBag.artigosId = artigos_id;
+            ViewBag.artigosLocalizacao = artigos_localizacao;
+            
+            return View("/Views/Home/Transferencia_Armazem.cshtml");
+        }
+
         public ActionResult Encomendas(string tipoDoc, string serie, string estado)
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();

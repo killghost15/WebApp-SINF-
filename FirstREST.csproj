@@ -411,6 +411,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Encomendas.cshtml" />
     <Content Include="Views\Home\Encomenda.cshtml" />
+    <Content Include="Views\Home\Transferencia_Armazem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

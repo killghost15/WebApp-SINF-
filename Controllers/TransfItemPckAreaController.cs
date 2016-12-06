@@ -16,8 +16,7 @@ namespace FirstREST.Controllers
 
             if (erro.Erro == 0)
             {
-                var response = Request.CreateResponse(
-                   HttpStatusCode.Created, artigo.Artigo.CodArtigo);
+                var response = Request.CreateResponse(HttpStatusCode.Created, artigo.Artigo.CodArtigo);
                 string uri = Url.Link("DefaultApi", new { CodArtigo = artigo.Artigo.CodArtigo });
                 response.Headers.Location = new Uri(uri);
                 return response;
