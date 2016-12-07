@@ -16,20 +16,34 @@ namespace FirstREST.Controllers
         public ActionResult TransferenciaArmazem()
         {
             ArtigoArmazemController cont = new ArtigoArmazemController();
+            LocalizacoesArmazemController cont2 = new LocalizacoesArmazemController();
             
             ViewBag.artigosArmazem = cont.Get();
             var lista_artigos = ViewBag.artigosArmazem;
 
-            string artigos_id = "";
-            string artigos_localizacao = "";
+            string artigosId_string = "";
+            string artigosLocalizacao_string = "";
 
             foreach (var artigo in lista_artigos) {
-                artigos_id = artigos_id + artigo.ArtigoId + ",";
-                artigos_localizacao = artigos_localizacao + artigo.Localizacao + ",";
+                artigosId_string = artigosId_string + artigo.ArtigoId + ",";
+                artigosLocalizacao_string = artigosLocalizacao_string + artigo.Localizacao + ",";
             }
 
-            ViewBag.artigosId = artigos_id;
-            ViewBag.artigosLocalizacao = artigos_localizacao;
+            ViewBag.artigosId = artigosId_string;
+            ViewBag.artigosLocalizacao = artigosLocalizacao_string;
+
+            // Lista de todas as localizacoes existentes
+            ViewBag.localizacoesArmazem = cont2.Get();
+            var lista_localizacoes = ViewBag.localizacoesArmazem;
+
+            string localizacoesLocalizacao_string = "";
+
+            foreach (var localizacao in lista_localizacoes)
+            {
+                localizacoesLocalizacao_string = localizacoesLocalizacao_string + localizacao.Localizacao + ",";
+            }
+
+            ViewBag.localizacoesLocalizacao = localizacoesLocalizacao_string;
 
             /* TODO
              * -> ter uma lista com todas as localizaçoes

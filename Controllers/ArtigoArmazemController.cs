@@ -16,30 +16,30 @@ namespace FirstREST.Controllers
             return Lib_Primavera.PriIntegration.ListaArtigoArmazem();
         }
 
-         public HttpResponseMessage Post(Lib_Primavera.Model.ArtigoArmazem art)
-         {
-             Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
-             erro = Lib_Primavera.PriIntegration.TransfereArtigo(art);
+        public HttpResponseMessage Post(Lib_Primavera.Model.ArtigoArmazem art)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
+            erro = Lib_Primavera.PriIntegration.TransfereArtigo(art);
 
-             if (erro.Erro == 0)
-             {
-                 var response = Request.CreateResponse(
-                    HttpStatusCode.Created, art);
-                 string uri = Url.Link("DefaultApi", new {  CodArtigo = art.ArtigoId,
-                                                            Localizacao = art.Localizacao,
-                                                            Armazem =art.Armazem,
-                                                            Stck=art.StockAtual
-                 });
-                 response.Headers.Location = new Uri(uri);
-                 return response;
-             }
+            if (erro.Erro == 0)
+            {
+                var response = Request.CreateResponse(
+                HttpStatusCode.Created, art);
+                string uri = Url.Link("DefaultApi", new {  CodArtigo = art.ArtigoId,
+                                                        Localizacao = art.Localizacao,
+                                                        Armazem =art.Armazem,
+                                                        Stck=art.StockAtual
+                });
+                response.Headers.Location = new Uri(uri);
+                return response;
+            }
 
-             else
-             {
-                 return Request.CreateResponse(HttpStatusCode.BadRequest);
-             }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
 
-         }
+        }
 
     }
 }

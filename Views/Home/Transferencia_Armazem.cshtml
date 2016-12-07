@@ -26,36 +26,69 @@
         </div>
     </div>
     <script>
+        var artigosId_string = "@ViewBag.artigosId";
+        var artigosLocalizacao_string = "@ViewBag.artigosLocalizacao";
+        var localizacoesLocalizacao_string = "@ViewBag.localizacoesLocalizacao";
+
+        // Split the strings
+        var artigosId_array = artigosId_string.split(",");
+        var artigosLocalizacao_array = artigosLocalizacao_string.split(",");
+        var localizacoesLocalizacao_array = localizacoesLocalizacao_string.split(",");
+            
+        // Executed each time a value is selected in dropdown 1
         $(function () {
             $('#select_artigo').change(function () {
                 var artigo_selecionado = $('#select_artigo').val();
 
-                var artigosId_string = "@ViewBag.artigosId";
-                var artigosLocalizacao_string = "@ViewBag.artigosLocalizacao";
-
-                // Clear the combo box for the origin location each time the first one is changed
+                // Clear the combo box for the origin and destination locations each time the first one is changed
                 $('#select_localizacaoOrigem').html('');
+                $('#select_localizacaoDestino').html('');
 
-                // Split the strings
-                var artigosId_array = artigosId_string.split(",");
-                var artigosLocalizacao_array = artigosLocalizacao_string.split(",");
+                var numArtigos = artigosId_array.length;  // número de artigos 
 
-                console.log(artigosId_string);
-                console.log(artigosLocalizacao_string);
-
-                console.log(artigosId_array[6]);
-                console.log(artigosLocalizacao_array[8]);
-
-                var localizacoes_new = [];
-
-                for (var i = 0; i < 135; i++) {
+                // Para cada artigo, se este é igual ao artigo selecionado, acrescenta uma opção de localização ao dropdown 2
+                for (var i = 0; i < numArtigos; i++) {
                     if (artigosId_array[i] == artigo_selecionado) {
                         $('#select_localizacaoOrigem').append('<option>' + artigosLocalizacao_array[i] + '</option>');
                     }
                 }
-
             });
         });
+
+        // Executed each time a value is selected in dropdown 2
+        $(function () {
+            $('#select_localizacaoOrigem').change(function () {
+                var localizacao_selecionada = $('#select_localizacaoOrigem').val();
+
+                var localizacoesVazias_array = [];
+                var memberOf = false;
+
+                var numLocalizacoesTot = localizacoesLocalizacao_array.length;  // número total de localizações existentes
+                var numLocalizacoesArt = artigosLocalizacao_array.length;  // número de localizações com artigos
+
+                // Ciclo que coloca em localizacoes_vazias todas as localizações que não tenham artigos
+                for (var i = 0; i < numLocalizacoesTot; i++) {
+                    for (var j = 0; j < numLocalizacoesArt; j++) {
+                        if (localizacoesLocalizacao_array[i] == artigosLocalizacao_array[j]) {
+                            memberOf = true;
+                            continue;
+                        }
+                    }
+
+                    if (memberOf == false)
+                        localizacoesVazias_array.push(localizacoesLocalizacao_array[i]);
+                    else
+                        memberOf = false;
+                }
+
+                var numLocalizacoesVazias = localizacoesVazias_array.length;
+
+                // Para cada localização vazia acrescenta uma opção ao dropdown 3
+                for (var k = 0; k < numLocalizacoesVazias; k++) {
+                    $('#select_localizacaoDestino').append('<option>' + localizacoesVazias_array[k] + '</option>');
+                }
+            });
+        });        
     </script>
 
     <div class="form-group">

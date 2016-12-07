@@ -7,54 +7,20 @@ namespace FirstREST.Lib_Primavera.Model
 {
     public class DocCompra
     {
+        public string id { get; set; }
 
-        public string id
-        {
-            get;
-            set;
-        }
+        public string NumDocExterno { get; set; }
 
-        public string NumDocExterno
-        {
-            get;
-            set;
-        }
+        public string Entidade { get; set; }
 
+        public int NumDoc { get; set; }
 
-        public string Entidade
-        {
-            get;
-            set;
-        }
+        public DateTime Data { get; set; }
 
-        public int NumDoc
-        {
-            get;
-            set;
-        }
+        public double TotalMerc { get; set; }
 
-        public DateTime Data
-        {
-            get;
-            set;
-        }
+        public string Serie { get; set; }
 
-        public double TotalMerc
-        {
-            get;
-            set;
-        }
-
-        public string Serie
-        {
-            get;
-            set;
-        }
-
-        public List<Model.LinhaDocCompra> LinhasDoc
-        {
-            get;
-            set;
-        }
+        public List<Model.LinhaDocCompra> LinhasDoc { get; set; }
     }
 }

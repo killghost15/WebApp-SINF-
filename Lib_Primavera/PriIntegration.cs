@@ -613,7 +613,7 @@ namespace FirstREST.Lib_Primavera
             {
                 //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
 
-                objList = PriEngine.Engine.Consulta("select Artigo,Armazem,StkActual,Localizacao from ArtigoArmazem");
+                objList = PriEngine.Engine.Consulta("select Artigo, Armazem, StkActual, Localizacao from ArtigoArmazem");
 
                 while (!objList.NoFim())
                 {
@@ -662,6 +662,37 @@ namespace FirstREST.Lib_Primavera
             else
                 return null;
         }*/
+
+        /* Função que devolve uma lista com todas as localizações que existem nos armazéns */
+        public static List<Model.LocalizacaoArmazem> ListaLocalizacoesArmazem()
+        {
+            StdBELista objList;
+
+            List<Model.LocalizacaoArmazem> listlocalizacoes = new List<Model.LocalizacaoArmazem>();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
+
+                objList = PriEngine.Engine.Consulta("select Localizacao, Armazem, Descricao from ArmazemLocalizacoes");
+
+                while (!objList.NoFim())
+                {
+                    listlocalizacoes.Add(new Model.LocalizacaoArmazem
+                    {
+                        Localizacao = objList.Valor("Localizacao"),
+                        Armazem = objList.Valor("Armazem"),
+                        Descricao = objList.Valor("Descricao")
+                    });
+
+                    objList.Seguinte();
+                }
+
+                return listlocalizacoes;
+            }
+            else
+                return null;
+        }
 
 
         #endregion TransferenciaArmazem
