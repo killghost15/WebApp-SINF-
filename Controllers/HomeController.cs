@@ -30,7 +30,15 @@ namespace FirstREST.Controllers
 
             ViewBag.artigosId = artigos_id;
             ViewBag.artigosLocalizacao = artigos_localizacao;
-            
+
+            /* TODO
+             * -> ter uma lista com todas as localizaçoes
+             * -> comparar essa lista com artigos_localizacao e retornar uma lista nova com apenas as localizaçoes vazias
+             * -> No Javascript:
+             *    -> crio uma lista com localizaçoes que estão no 2º dropdown, mas retiro a que foi selecionada
+             *    -> a essa lista faço append das localizações vazias
+             */
+
             return View("/Views/Home/Transferencia_Armazem.cshtml");
         }
 

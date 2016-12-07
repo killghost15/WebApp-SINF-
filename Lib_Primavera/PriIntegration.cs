@@ -13,23 +13,21 @@ namespace FirstREST.Lib_Primavera
 {
     public class PriIntegration
     {
+
         # region Cliente
 
+        /* Função que devolve uma lista com todos os clientes */
         public static List<Model.Cliente> ListaClientes()
         {
-
-
             StdBELista objList;
 
             List<Model.Cliente> listClientes = new List<Model.Cliente>();
 
             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
             {
-
                 //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
 
                 objList = PriEngine.Engine.Consulta("SELECT Cliente, Nome, Moeda, NumContrib as NumContribuinte, Fac_Mor AS campo_exemplo FROM  CLIENTES");
-
 
                 while (!objList.NoFim())
                 {
@@ -51,18 +49,15 @@ namespace FirstREST.Lib_Primavera
                 return null;
         }
 
+        /* Função que devolve um cliente com um código codCliente */
         public static Lib_Primavera.Model.Cliente GetCliente(string codCliente)
         {
-
-
             GcpBECliente objCli = new GcpBECliente();
-
 
             Model.Cliente myCli = new Model.Cliente();
 
             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
             {
-
                 if (PriEngine.Engine.Comercial.Clientes.Existe(codCliente) == true)
                 {
                     objCli = PriEngine.Engine.Comercial.Clientes.Edita(codCliente);
@@ -82,19 +77,17 @@ namespace FirstREST.Lib_Primavera
                 return null;
         }
 
+        /* Função que faz update de um cliente */
         public static Lib_Primavera.Model.RespostaErro UpdCliente(Lib_Primavera.Model.Cliente cliente)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
-
 
             GcpBECliente objCli = new GcpBECliente();
 
             try
             {
-
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
                 {
-
                     if (PriEngine.Engine.Comercial.Clientes.Existe(cliente.CodCliente) == false)
                     {
                         erro.Erro = 1;
@@ -103,7 +96,6 @@ namespace FirstREST.Lib_Primavera
                     }
                     else
                     {
-
                         objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodCliente);
                         objCli.set_EmModoEdicao(true);
 
@@ -123,8 +115,8 @@ namespace FirstREST.Lib_Primavera
                 {
                     erro.Erro = 1;
                     erro.Descricao = "Erro ao abrir a empresa";
+                    
                     return erro;
-
                 }
 
             }
@@ -138,17 +130,14 @@ namespace FirstREST.Lib_Primavera
 
         }
 
-
+        /* Função que faz delete de um cliente */
         public static Lib_Primavera.Model.RespostaErro DelCliente(string codCliente)
         {
-
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             GcpBECliente objCli = new GcpBECliente();
 
-
             try
             {
-
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
                 {
                     if (PriEngine.Engine.Comercial.Clientes.Existe(codCliente) == false)
@@ -159,7 +148,6 @@ namespace FirstREST.Lib_Primavera
                     }
                     else
                     {
-
                         PriEngine.Engine.Comercial.Clientes.Remove(codCliente);
                         erro.Erro = 0;
                         erro.Descricao = "Sucesso";
@@ -183,14 +171,11 @@ namespace FirstREST.Lib_Primavera
             }
 
         }
-
-
-
+        
+        /* Função que adiciona um novo cliente */
         public static Lib_Primavera.Model.RespostaErro InsereClienteObj(Model.Cliente cli)
         {
-
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
-
 
             GcpBECliente myCli = new GcpBECliente();
 
@@ -198,7 +183,6 @@ namespace FirstREST.Lib_Primavera
             {
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
                 {
-
                     myCli.set_Cliente(cli.CodCliente);
                     myCli.set_Nome(cli.NomeCliente);
                     myCli.set_NumContribuinte(cli.NumContribuinte);
@@ -226,24 +210,53 @@ namespace FirstREST.Lib_Primavera
                 return erro;
             }
 
-
         }
-
 
 
         #endregion Cliente;   // -----------------------------  END   CLIENTE    -----------------------
 
         #region Artigo
 
+        /* Função que devolve uma lista com todos os artigos */
+        public static List<Model.Artigo> ListaArtigos()
+        {
+            StdBELista objList;
+
+            Model.Artigo art = new Model.Artigo();
+            List<Model.Artigo> listArts = new List<Model.Artigo>();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList = PriEngine.Engine.Comercial.Artigos.LstArtigos();
+
+                while (!objList.NoFim())
+                {
+                    art = new Model.Artigo();
+                    art.CodArtigo = objList.Valor("artigo");
+                    art.DescArtigo = objList.Valor("descricao");
+
+                    listArts.Add(art);
+                    objList.Seguinte();
+                }
+
+                return listArts;
+
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        /* Função que devolve um artigo com codArtigo */
         public static Lib_Primavera.Model.Artigo GetArtigo(string codArtigo)
         {
-
             GcpBEArtigo objArtigo = new GcpBEArtigo();
             Model.Artigo myArt = new Model.Artigo();
 
             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
             {
-
                 if (PriEngine.Engine.Comercial.Artigos.Existe(codArtigo) == false)
                 {
                     return null;
@@ -265,40 +278,6 @@ namespace FirstREST.Lib_Primavera
 
         }
 
-        public static List<Model.Artigo> ListaArtigos()
-        {
-
-            StdBELista objList;
-
-            Model.Artigo art = new Model.Artigo();
-            List<Model.Artigo> listArts = new List<Model.Artigo>();
-
-            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
-            {
-
-                objList = PriEngine.Engine.Comercial.Artigos.LstArtigos();
-
-                while (!objList.NoFim())
-                {
-                    art = new Model.Artigo();
-                    art.CodArtigo = objList.Valor("artigo");
-                    art.DescArtigo = objList.Valor("descricao");
-
-                    listArts.Add(art);
-                    objList.Seguinte();
-                }
-
-                return listArts;
-
-            }
-            else
-            {
-                return null;
-
-            }
-
-        }
-
         #endregion Artigo
 
         #region DocCompra
@@ -306,7 +285,6 @@ namespace FirstREST.Lib_Primavera
 
         public static List<Model.DocCompra> VGR_List()
         {
-
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocCompra dc = new Model.DocCompra();
@@ -355,6 +333,7 @@ namespace FirstREST.Lib_Primavera
                     objListCab.Seguinte();
                 }
             }
+
             return listdc;
         }
 
@@ -362,7 +341,6 @@ namespace FirstREST.Lib_Primavera
         public static Model.RespostaErro VGR_New(Model.DocCompra dc)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
-
 
             GcpBEDocumentoCompra myGR = new GcpBEDocumentoCompra();
             GcpBELinhaDocumentoCompra myLin = new GcpBELinhaDocumentoCompra();
@@ -391,20 +369,20 @@ namespace FirstREST.Lib_Primavera
                         PriEngine.Engine.Comercial.Compras.AdicionaLinha(myGR, lin.CodArtigo, lin.Quantidade, lin.Armazem, "", lin.PrecoUnitario, lin.Desconto);
                     }
 
-
                     PriEngine.Engine.IniciaTransaccao();
                     PriEngine.Engine.Comercial.Compras.Actualiza(myGR, "Teste");
                     PriEngine.Engine.TerminaTransaccao();
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
+
                     return erro;
                 }
                 else
                 {
                     erro.Erro = 1;
                     erro.Descricao = "Erro ao abrir empresa";
-                    return erro;
 
+                    return erro;
                 }
 
             }
@@ -422,15 +400,13 @@ namespace FirstREST.Lib_Primavera
 
         #region DocsVenda
 
+        /* Função que permite criar uma nova encomenda */
         public static Model.RespostaErro Encomendas_New(Model.DocVenda dv)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             GcpBEDocumentoVenda myEnc = new GcpBEDocumentoVenda();
-
             GcpBELinhaDocumentoVenda myLin = new GcpBELinhaDocumentoVenda();
-
             GcpBELinhasDocumentoVenda myLinhas = new GcpBELinhasDocumentoVenda();
-
             PreencheRelacaoVendas rl = new PreencheRelacaoVendas();
             List<Model.LinhaDocVenda> lstlindv = new List<Model.LinhaDocVenda>();
 
@@ -453,7 +429,6 @@ namespace FirstREST.Lib_Primavera
                         PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);
                     }
 
-
                     // PriEngine.Engine.Comercial.Compras.TransformaDocumento(
 
                     PriEngine.Engine.IniciaTransaccao();
@@ -462,14 +437,15 @@ namespace FirstREST.Lib_Primavera
                     PriEngine.Engine.TerminaTransaccao();
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
+
                     return erro;
                 }
                 else
                 {
                     erro.Erro = 1;
                     erro.Descricao = "Erro ao abrir empresa";
-                    return erro;
 
+                    return erro;
                 }
 
             }
@@ -478,15 +454,14 @@ namespace FirstREST.Lib_Primavera
                 PriEngine.Engine.DesfazTransaccao();
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
+
                 return erro;
             }
         }
 
-
-
+        /* Função que devolve uma lista com todas as encomendas */
         public static List<Model.DocVenda> Encomendas_List()
         {
-
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocVenda dv = new Model.DocVenda();
@@ -532,16 +507,13 @@ namespace FirstREST.Lib_Primavera
                     objListCab.Seguinte();
                 }
             }
+
             return listdv;
         }
 
-
-
-
+        /* Função que devolve uma encomenda com numdoc */
         public static Model.DocVenda Encomenda_Get(string numdoc)
         {
-
-
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocVenda dv = new Model.DocVenda();
@@ -550,8 +522,6 @@ namespace FirstREST.Lib_Primavera
 
             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
             {
-
-
                 string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
                 dv = new Model.DocVenda();
@@ -581,20 +551,22 @@ namespace FirstREST.Lib_Primavera
                 }
 
                 dv.LinhasDoc = listlindv;
+
                 return dv;
             }
+
             return null;
         }
+
 
         #endregion DocsVenda
 
         #region TransferenciaArmazem
 
+        /* Função que efetua uma transferência de armazém de um certo artigo art */
         public static Lib_Primavera.Model.RespostaErro TransfereArtigo(Model.ArtigoArmazem art)
         {
-
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
-
 
             GcpBEArtigoArmazem myart = new GcpBEArtigoArmazem();
 
@@ -602,7 +574,6 @@ namespace FirstREST.Lib_Primavera
             {
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
                 {
-
                     myart.set_Artigo(art.ArtigoId);
                     myart.set_Armazem(art.Armazem);
                     myart.set_Localizacao(art.Localizacao);
@@ -610,12 +581,14 @@ namespace FirstREST.Lib_Primavera
                     PriEngine.Engine.Comercial.ArtigosArmazens.Actualiza(myart);
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
+
                     return erro;
                 }
                 else
                 {
                     erro.Erro = 1;
                     erro.Descricao = "Erro ao abrir empresa";
+
                     return erro;
                 }
             }
@@ -627,10 +600,9 @@ namespace FirstREST.Lib_Primavera
                 return erro;
             }
 
-
         }
 
-
+        /* Função que devolve uma lista com todos os artigos que estão no armazém */
         public static List<Model.ArtigoArmazem> ListaArtigoArmazem()
         {
             StdBELista objList;
@@ -639,11 +611,9 @@ namespace FirstREST.Lib_Primavera
 
             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
             {
-
                 //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
 
                 objList = PriEngine.Engine.Consulta("select Artigo,Armazem,StkActual,Localizacao from ArtigoArmazem");
-
 
                 while (!objList.NoFim())
                 {
@@ -654,8 +624,8 @@ namespace FirstREST.Lib_Primavera
                         Armazem = objList.Valor("Armazem"),
                         StockAtual = objList.Valor("StkActual")
                     });
-                    objList.Seguinte();
 
+                    objList.Seguinte();
                 }
 
                 return listartigos;
@@ -665,40 +635,42 @@ namespace FirstREST.Lib_Primavera
         }
 
         /* public static Model.ArtigoArmazem GetArtigoArmazem(string id)
-         {
-             GcpBEArtigoArmazem objartigo = new GcpBEArtigoArmazem();
+        {
+            GcpBEArtigoArmazem objartigo = new GcpBEArtigoArmazem();
 
 
-             Model.ArtigoArmazem myart = new Model.ArtigoArmazem();
+            Model.ArtigoArmazem myart = new Model.ArtigoArmazem();
 
-             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
-             {
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
 
-                 if (PriEngine.Engine.Comercial.ArtigosArmazens.Existe(id) == true)
-                 {
-                     objartigo = PriEngine.Engine.Comercial.
-                     myart.CodCliente = objartigo.get_Cliente();
-                     myart.NomeCliente = objartigo.get_Nome();
-                     myart.Moeda = objartigo.get_Moeda();
-                     myart.NumContribuinte = objartigo.get_NumContribuinte();
-                     myart.Morada = objartigo.get_Morada();
-                     return myart;
-                 }
-                 else
-                 {
-                     return null;
-                 }
-             }
-             else
-                 return null;
-         }*/
+                if (PriEngine.Engine.Comercial.ArtigosArmazens.Existe(id) == true)
+                {
+                    objartigo = PriEngine.Engine.Comercial.
+                    myart.CodCliente = objartigo.get_Cliente();
+                    myart.NomeCliente = objartigo.get_Nome();
+                    myart.Moeda = objartigo.get_Moeda();
+                    myart.NumContribuinte = objartigo.get_NumContribuinte();
+                    myart.Morada = objartigo.get_Morada();
+                    return myart;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+                return null;
+        }*/
+
+
         #endregion TransferenciaArmazem
 
         #region DocVendaPCK
 
+        /* Função que devolve uma lista com todas as encomendas de uma certa série e com um certo estado */
         public static List<Model.DocVendaPCK> Encomendas_List_PCK(string tipoDoc, string serie, string estado)
         {
-
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocVendaPCK dv = new Model.DocVendaPCK();
@@ -770,12 +742,13 @@ namespace FirstREST.Lib_Primavera
                     objListCab.Seguinte();
                 }
             }
+
             return listdv;
         }
 
+        /* Função que devolve uma lista com todas as encomendas do um certo id */
         public static List<Model.DocVendaPCK> Encomendas_List_PCK(string id)
         {
-
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocVendaPCK dv = new Model.DocVendaPCK();
@@ -792,7 +765,6 @@ namespace FirstREST.Lib_Primavera
                 sql.Append("SELECT Id, Data, Entidade, TipoDoc, NumDoc, DataCarga, HoraCarga, Serie, Documento, Estado FROM cabecdoc CD inner join CabecDocStatus ST ON CD.id = ST.IdCabecDoc");
                 sql.Append(" WHERE Id='@1@'");
  
-
                 query = sql.ToString();
                 query = query.Replace("@1@", id);
 
@@ -844,6 +816,7 @@ namespace FirstREST.Lib_Primavera
                     objListCab.Seguinte();
                 }
             }
+
             return listdv;
         }
 
@@ -851,6 +824,7 @@ namespace FirstREST.Lib_Primavera
 
         #region GuiaDeRemessa
 
+        /* Função que cria uma nova guia de remessa */
         public static Model.RespostaErro GuiaDeRemessa_New(Model.CriaGuiaDeRemessa gr)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
@@ -875,14 +849,15 @@ namespace FirstREST.Lib_Primavera
                     PriEngine.Engine.TerminaTransaccao();
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
+
                     return erro;
                 }
                 else
                 {
                     erro.Erro = 1;
                     erro.Descricao = "Erro ao abrir empresa";
-                    return erro;
 
+                    return erro;
                 }
 
             }
@@ -891,6 +866,7 @@ namespace FirstREST.Lib_Primavera
                 PriEngine.Engine.DesfazTransaccao();
                 erro.Erro = 2;
                 erro.Descricao = ex.Message;
+
                 return erro;
             }
             //return erro;
@@ -899,7 +875,10 @@ namespace FirstREST.Lib_Primavera
         #endregion
 
         #region xico
-        public static Model.RespostaErro VerificaTransf(Model.TransItemPckArea artigo) {
+
+        /* Função que verifica se uma transferência de um artigo é possível */
+        public static Model.RespostaErro VerificaTransf(Model.TransItemPckArea artigo)
+        {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
             List<Model.ArtigoArmazem> listartigos = new List<Model.ArtigoArmazem>();
             StdBELista objList;
@@ -908,47 +887,44 @@ namespace FirstREST.Lib_Primavera
             {
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
                 {
-                    
-
                     StringBuilder sql = new StringBuilder();
                     string query = string.Empty;
 
-                    sql.Append("select Artigo,Armazem,StkActual,Localizacao from ArtigoArmazem");
+                    sql.Append("select Artigo, Armazem, StkActual, Localizacao from ArtigoArmazem");
                     sql.Append(" WHERE Artigo='@1@'");
                     sql.Append(" AND Localizacao='@2@'");
 
-                    
-
                     query = sql.ToString();
                     query = query.Replace("@1@", artigo.Artigo.CodArtigo);
-                    query=query.Replace("@2@", artigo.LocalizacaoEntrada);
+                    query = query.Replace("@2@", artigo.LocalizacaoEntrada);
                     objList = PriEngine.Engine.Consulta(query);
                    
                     if (objList==null) {
                         erro.Erro = 1;
                         erro.Descricao = "Não existe a localização com esse artigo ou não existe esse artigo sequer";
-                    
                     }
                 }
-             else
+                else
                 {
                     erro.Erro = 1;
                     erro.Descricao = "Erro ao abrir empresa";
-                    return erro;
 
+                    return erro;
                 }
 
             }
             catch (Exception ex)
             {
-                
                 erro.Erro = 2;
                 erro.Descricao = ex.Message;
+
                 return erro;
             }
 
             return erro;
         }
+
+        /* Função que transfere um item para a área de picking */
         public static Model.RespostaErro TransfereItemPickingArea(Model.TransItemPckArea artigo)
         {
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
@@ -961,7 +937,6 @@ namespace FirstREST.Lib_Primavera
                     var data = DateTime.Now;
                     documento.set_Tipodoc("TRA");
                     documento.set_Serie(artigo.serie);
-            
 
                     documento.set_ArmazemOrigem(artigo.ArmazemSaida);
                     documento.set_DataDoc(data);
@@ -991,8 +966,8 @@ namespace FirstREST.Lib_Primavera
                 {
                     erro.Erro = 1;
                     erro.Descricao = "Erro ao abrir empresa";
-                    return erro;
 
+                    return erro;
                 }
 
             }
@@ -1001,8 +976,10 @@ namespace FirstREST.Lib_Primavera
                 PriEngine.Engine.DesfazTransaccao();
                 erro.Erro = 2;
                 erro.Descricao = ex.Message;
+
                 return erro;
             }
+
             return erro;
         }
 
@@ -1020,6 +997,8 @@ namespace FirstREST.Lib_Primavera
 
         public static Model.RespostaErro GeneratePickingList(
         */
+
         #endregion
+
     }
 }
