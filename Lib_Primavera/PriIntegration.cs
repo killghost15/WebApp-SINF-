@@ -1061,6 +1061,7 @@ namespace FirstREST.Lib_Primavera
                     Model.Artigo art = new Model.Artigo();
                     Model.Encomenda ecl = new Model.Encomenda();
                     string id = "";
+                    //cria-se uma lista de encomendas a partir do select das linhas das encomendas
                     while (!objList.NoFim())
                     {
 
@@ -1090,6 +1091,7 @@ namespace FirstREST.Lib_Primavera
                     int min = encomendas[0].Data;
                     int indexmin = 0;
                     List<Model.Encomenda> pickList = new List<Model.Encomenda>();
+                    //seleciona se as encomendas q se vai fazer picking
                     for (int k = 0; k < numencomendas; k++)
                     {
                         for (int i = 0; i < encomendas.Count(); i++)
@@ -1106,6 +1108,8 @@ namespace FirstREST.Lib_Primavera
                         pickList.Add(encomendas[indexmin]);
                     }
 
+                    //percorrer as localizacoes nos elementos das encomendas para escolher qual o artigo mais proximo
+                    //
 
                 }
                 else
