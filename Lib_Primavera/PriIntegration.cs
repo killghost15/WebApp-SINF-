@@ -1065,6 +1065,7 @@ namespace FirstREST.Lib_Primavera
                     {
 
                         ecl.Id = objList.Valor("LinhasDoc.IdCabecDoc");
+                        ecl.Data = objList.Valor("LinhasDoc.DataEntrega");
                         id = objList.Valor("LinhasDoc.IdCabecDoc");
 
                         art.CodArtigo = objList.Valor("LinhasDoc.Artigo");
