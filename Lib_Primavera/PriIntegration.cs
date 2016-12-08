@@ -1109,8 +1109,28 @@ namespace FirstREST.Lib_Primavera
                     }
 
                     //percorrer as localizacoes nos elementos das encomendas para escolher qual o artigo mais proximo
-                    //
+                    StringBuilder sql1 = new StringBuilder();
+                    string query1 = string.Empty;
 
+                    sql1.Append("insert into pickingwave (Localizacao,Artigo,Quantidade,IdECL,Estado) values ('@1@','@2@','@3@','@4@',0");
+
+
+
+
+
+                    query1 = sql1.ToString();
+
+                    objList = PriEngine.Engine.Consulta(query);
+                    //Pegar no conjunto de encomendas selecionadas e criar as picking waves
+                    for (int l = 0; l < pickList.Count(); l++)
+                    {
+                        for (int b = 0; b < pickList[l].lista.Count(); b++)
+                        {
+                            query1 = query1.Replace("@1@", pickList[l].lista[b].CodArtigo);
+                            //#TODO 
+                        }
+
+                    }
                 }
                 else
                 {
