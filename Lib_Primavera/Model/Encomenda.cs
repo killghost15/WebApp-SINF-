@@ -9,7 +9,7 @@ namespace FirstREST.Lib_Primavera.Model
     public class Encomenda 
     {
 
-        public int Data
+        public DateTime Data
         {
             get;
             set;

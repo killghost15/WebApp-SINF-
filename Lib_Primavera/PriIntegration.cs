@@ -1088,7 +1088,7 @@ namespace FirstREST.Lib_Primavera
                         }
 
                     }
-                    int min = encomendas[0].Data;
+                    DateTime min = encomendas[0].Data;
                     int indexmin = 0;
                     List<Model.Encomenda> pickList = new List<Model.Encomenda>();
                     //seleciona se as encomendas q se vai fazer picking
