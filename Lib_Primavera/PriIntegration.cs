@@ -905,7 +905,7 @@ namespace FirstREST.Lib_Primavera
 
         #endregion
 
-        #region xico
+        #region Picking
 
         /* Função que verifica se uma transferência de um artigo é possível */
         public static Model.RespostaErro VerificaTransf(Model.TransItemPckArea artigo)
@@ -1014,9 +1014,6 @@ namespace FirstREST.Lib_Primavera
             return erro;
         }
 
-        #endregion
-
-        #region Picking
 
         //public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> )
         //{
@@ -1024,10 +1021,111 @@ namespace FirstREST.Lib_Primavera
 
         //    return erro;
         //}
-        /*
+        public static Model.RespostaErro GeneratePickingList(int numencomendas)
+        {
 
-        public static Model.RespostaErro GeneratePickingList(
-        */
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+
+
+            // List<Model.ArtigoArmazem> listartigos = new List<Model.ArtigoArmazem>();
+            StdBELista objList;
+
+            try
+            {
+                if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+                {
+
+
+                    StringBuilder sql = new StringBuilder();
+                    string query = string.Empty;
+
+                    sql.Append("select LinhasDoc.Artigo,LinhasDoc.Descricao ,LinhasDoc.Localizacao,LinhasDoc.Quantidade,LinhasDoc.DataEntrega,LinhasDoc.IdCabecDoc,CabecDoc.Entidade from LinhasDoc INNER JOIN CabecDoc ON CabecDoc.TipoDoc='ECL' AND LinhasDoc.IdCabecDoc=CabecDoc.Id AND LinhasDoc.Artigo!='NULL' order by LinhasDoc.IdCabecDoc;");
+                    //sql.Append(" WHERE Artigo='@1@'");
+                    //sql.Append(" AND Localizacao='@2@'");
+
+
+
+                    //query = sql.ToString();
+                    //query = query.Replace("@1@", artigo.Artigo.CodArtigo);
+                    //query = query.Replace("@2@", artigo.LocalizacaoEntrada);
+                    objList = PriEngine.Engine.Consulta(query);
+
+                    if (objList == null)
+                    {
+                        erro.Erro = 1;
+                        erro.Descricao = "Não existe a localização com esse artigo ou não existe esse artigo sequer";
+                        return erro;
+                    }
+
+                    List<Model.Encomenda> encomendas = new List<Model.Encomenda>();
+                    Model.Artigo art = new Model.Artigo();
+                    Model.Encomenda ecl = new Model.Encomenda();
+                    string id = "";
+                    while (!objList.NoFim())
+                    {
+
+                        ecl.Id = objList.Valor("LinhasDoc.IdCabecDoc");
+                        id = objList.Valor("LinhasDoc.IdCabecDoc");
+
+                        art.CodArtigo = objList.Valor("LinhasDoc.Artigo");
+                        art.DescArtigo = objList.Valor("LinhasDoc.Descricao");
+                        art.Quantidade = objList.Valor("LinhasDoc.Quantidade");
+                        art.localizacao = objList.Valor("LinhasDoc.Localizacao");
+                        ecl.lista.Add(art);
+                        objList.Seguinte();
+                        if (objList.NoFim())
+                        {
+                            encomendas.Add(ecl);
+                        }
+                        else
+                        {
+                            if (id != objList.Valor("LinhasDoc.IdCabecDoc"))
+                            {
+                                encomendas.Add(ecl);
+                            }
+                        }
+
+                    }
+                    int min = encomendas[0].Data;
+                    int indexmin = 0;
+                    List<Model.Encomenda> pickList = new List<Model.Encomenda>();
+                    for (int k = 0; k < numencomendas; k++)
+                    {
+                        for (int i = 0; i < encomendas.Count(); i++)
+                        {
+
+
+                            if (encomendas[i].Data < min && !pickList.Contains(encomendas[i]))
+                            {
+                                min = encomendas[i].Data;
+                                indexmin = i;
+                            }
+
+                        }
+                        pickList.Add(encomendas[indexmin]);
+                    }
+
+
+                }
+                else
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "Erro ao abrir empresa";
+                    return erro;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                erro.Erro = 2;
+                erro.Descricao = ex.Message;
+                return erro;
+            }
+
+            return erro;
+        }
 
         #endregion
 
