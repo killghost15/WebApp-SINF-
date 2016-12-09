@@ -1022,6 +1022,7 @@ namespace FirstREST.Lib_Primavera
 
             return erro;
         }
+
         public static Model.RespostaErro GeneratePickingList(int numencomendas)
         {
 
@@ -1044,6 +1045,7 @@ namespace FirstREST.Lib_Primavera
                     //sql.Append(" WHERE Artigo='@1@'");
                     //sql.Append(" AND Localizacao='@2@'");
 
+<<<<<<< Updated upstream
 
 
                     //query = sql.ToString();
@@ -1159,6 +1161,12 @@ namespace FirstREST.Lib_Primavera
                 return erro;
             }
 
+=======
+        public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> linhas)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+
+>>>>>>> Stashed changes
             return erro;
         }
 

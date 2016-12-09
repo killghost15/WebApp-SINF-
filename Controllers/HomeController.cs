@@ -67,6 +67,7 @@ namespace FirstREST.Controllers
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
             ViewBag.encomenda = cont.Get(id);
+            ViewBag.precoTotal = cont.GetTotalPrice(id);
             return View("/Views/Home/Encomenda.cshtml");
         }
     }

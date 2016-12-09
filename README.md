@@ -13,6 +13,7 @@
 * Login com o nome de funcionário (sessions)
 * Valor total dos produtos na página de encomenda
 * Botão de gerar Picking List na página de encomendas, com a informaçãode como ir buscar os artigos (quantidade || volume || data || ...)
+* Acrescentar dropdown para selecionar armazem na pagina de transferencias, a partir disso limita-se a quantidade de artigos e localizações
 
 
 <div id='integration'>
