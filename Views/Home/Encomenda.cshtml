@@ -25,6 +25,8 @@
                         <th><input type="text" class="form-control" placeholder="Unidade" disabled></th>
                         <th><input type="text" class="form-control" placeholder="QuantTrans" disabled></th>
                         <th><input type="text" class="form-control" placeholder="EstadoTrans" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="PrecUnit" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="PrecoTotal" disabled></th>
                     </tr>
                 </thead>
                 <tbody class="table-hover">
@@ -40,11 +42,15 @@
                             <td>@produto.Unidade</td>
                             <td>@produto.QuantTrans</td>
                             <td>@produto.EstadoTrans</td>
+                            <td>@produto.PrecUnit €</td>
+                            <td>@produto.PrecoTotalLinha €</td>
                         </tr>
-                    }
+                    }                  
                 </tbody>
             </table>
-        </div>
+            <div class="panel-heading" style="text-align:right">
+                <h3 class="panel-title">Preço Total: @ViewBag.precoTotal €</h3>
+            </div>
     </div>
 </div>
 <br /><br />

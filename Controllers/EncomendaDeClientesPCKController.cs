@@ -26,5 +26,10 @@ namespace FirstREST.Controllers
             return Lib_Primavera.PriIntegration.Encomendas_List_PCK(id);
         }
 
+        public string GetTotalPrice(string id)
+        {
+            return Lib_Primavera.PriIntegration.Encomendas_List_PCK_TotalPrice(id);
+        }
+
     }
 }

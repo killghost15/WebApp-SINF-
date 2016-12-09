@@ -32,5 +32,11 @@ namespace FirstREST.Lib_Primavera.Model
         public string QuantTrans { get; set; }
 
         public string EstadoTrans { get; set; }
+
+        public string PrecUnit { get; set; }
+
+        public string PrecoTotalLinha { get; set; }
+        
+        public string PrecoTotal { get; set; }
     }
 }
