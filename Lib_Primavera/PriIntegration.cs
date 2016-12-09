@@ -1086,7 +1086,7 @@ namespace FirstREST.Lib_Primavera
 
         //    return erro;
         //}
-        /*public static Model.RespostaErro GeneratePickingList(int numencomendas)
+        public static Model.RespostaErro GeneratePickingList(int numencomendas, string serie)
         {
 
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
@@ -1104,14 +1104,14 @@ namespace FirstREST.Lib_Primavera
                     StringBuilder sql = new StringBuilder();
                     string query = string.Empty;
 
-                    sql.Append("select LinhasDoc.Artigo,LinhasDoc.Descricao ,LinhasDoc.Localizacao,LinhasDoc.Quantidade,LinhasDoc.DataEntrega,LinhasDoc.IdCabecDoc,CabecDoc.Entidade from LinhasDoc INNER JOIN CabecDoc ON CabecDoc.TipoDoc='ECL' AND LinhasDoc.IdCabecDoc=CabecDoc.Id AND LinhasDoc.Artigo!='NULL' JOIN PickingWave ON LinhasDoc.IdCabecDoc!=PickingWave.IdECL order by LinhasDoc.IdCabecDoc;");
+                    sql.Append("select LinhasDoc.Artigo,LinhasDoc.Descricao ,LinhasDoc.Localizacao,LinhasDoc.Quantidade,LinhasDoc.DataEntrega,LinhasDoc.IdCabecDoc,CabecDoc.Entidade from LinhasDoc INNER JOIN CabecDoc ON CabecDoc.TipoDoc='ECL' AND LinhasDoc.IdCabecDoc=CabecDoc.Id AND LinhasDoc.Artigo!='NULL' AND CabecDoc.Serie='@5@' AND LinhasDoc.Localizacao!='NULL' JOIN PickingWave ON LinhasDoc.IdCabecDoc!=PickingWave.IdECL order by LinhasDoc.IdCabecDoc;");
                     //sql.Append(" WHERE Artigo='@1@'");
                     //sql.Append(" AND Localizacao='@2@'");
 
 
 
-                    //query = sql.ToString();
-                    //query = query.Replace("@1@", artigo.Artigo.CodArtigo);
+                    query = sql.ToString();
+                    query = query.Replace("@5@", serie);
                     //query = query.Replace("@2@", artigo.LocalizacaoEntrada);
                     objList = PriEngine.Engine.Consulta(query);
 
@@ -1198,7 +1198,7 @@ namespace FirstREST.Lib_Primavera
                             query1 = query1.Replace("@3@", pickList[l].lista[b].Quantidade.ToString());
                             query1 = query1.Replace("@4@", pickList[l].Id);
                             PriEngine.Engine.Consulta(query1);
-                            //#TODO 
+
                         }
 
                     }
@@ -1224,7 +1224,7 @@ namespace FirstREST.Lib_Primavera
             }
 
             return erro;
-        }*/
+        }
 
         #endregion
 
