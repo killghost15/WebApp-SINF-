@@ -741,7 +741,7 @@ namespace FirstREST.Lib_Primavera
                     dv.Serie = objListCab.Valor("Serie");
                     dv.Documento = objListCab.Valor("Documento");
                     dv.Estado = objListCab.Valor("Estado");
-                    objListLin = PriEngine.Engine.Consulta("Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "' order By NumLinha");
+                    objListLin = PriEngine.Engine.Consulta("Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans, PrecUnit,(PrecUnit * LD.Quantidade+ (PrecUnit*LD.Quantidade*(TaxaIva/100))) as PrecoTotal from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "' order By NumLinha");
                     listlindv = new List<Model.LinhaDocVendaPCK>();
 
                     while (!objListLin.NoFim())
@@ -763,6 +763,11 @@ namespace FirstREST.Lib_Primavera
                         double quantTrans = objListLin.Valor("QuantTrans");
                         lindv.QuantTrans = Convert.ToString(quantTrans);
                         lindv.EstadoTrans = objListLin.Valor("EstadoTrans");
+                        double precoUnit = objListLin.Valor("PrecUnit");
+                        precoUnit = Math.Round(precoUnit, 2);
+                        lindv.PrecUnit = Convert.ToString(precoUnit);
+                        double precoTotalLinha = objListLin.Valor("PrecoTotal");
+                        lindv.PrecoTotalLinha = Convert.ToString(precoTotalLinha);
 
                         listlindv.Add(lindv);
                         objListLin.Seguinte();
@@ -815,7 +820,7 @@ namespace FirstREST.Lib_Primavera
                     dv.Serie = objListCab.Valor("Serie");
                     dv.Documento = objListCab.Valor("Documento");
                     dv.Estado = objListCab.Valor("Estado");
-                    objListLin = PriEngine.Engine.Consulta("Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "' order By NumLinha");
+                    objListLin = PriEngine.Engine.Consulta("Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans,PrecUnit,(PrecUnit * LD.Quantidade+ (PrecUnit*LD.Quantidade*(TaxaIva/100))) as PrecoTotalLinha from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "' order By NumLinha");
                     listlindv = new List<Model.LinhaDocVendaPCK>();
 
                     while (!objListLin.NoFim())
@@ -837,6 +842,11 @@ namespace FirstREST.Lib_Primavera
                         double quantTrans = objListLin.Valor("QuantTrans");
                         lindv.QuantTrans = Convert.ToString(quantTrans);
                         lindv.EstadoTrans = objListLin.Valor("EstadoTrans");
+                        double precoUnit = objListLin.Valor("PrecUnit");
+                        precoUnit = Math.Round(precoUnit, 2);
+                        lindv.PrecUnit = Convert.ToString(precoUnit);
+                        double precoTotalLinha = objListLin.Valor("PrecoTotalLinha");
+                        lindv.PrecoTotalLinha = Convert.ToString(precoTotalLinha);
 
                         listlindv.Add(lindv);
                         objListLin.Seguinte();
@@ -849,6 +859,61 @@ namespace FirstREST.Lib_Primavera
             }
 
             return listdv;
+        }
+
+        public static string Encomendas_List_PCK_TotalPrice(string id)
+        {
+            StdBELista objListCab;
+            StdBELista objListLin;
+            Model.DocVendaPCK dv = new Model.DocVendaPCK();
+            List<Model.DocVendaPCK> listdv = new List<Model.DocVendaPCK>();
+            Model.LinhaDocVendaPCK lindv = new Model.LinhaDocVendaPCK();
+            List<Model.LinhaDocVendaPCK> listlindv = new List<Model.LinhaDocVendaPCK>();
+            string precoTotal = "none";
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
+                sql.Append("SELECT Id, Data, Entidade, TipoDoc, NumDoc, DataCarga, HoraCarga, Serie, Documento, Estado FROM cabecdoc CD inner join CabecDocStatus ST ON CD.id = ST.IdCabecDoc");
+                sql.Append(" WHERE Id='@1@'");
+
+                query = sql.ToString();
+                query = query.Replace("@1@", id);
+
+                objListCab = PriEngine.Engine.Consulta(query);
+
+                while (!objListCab.NoFim())
+                {
+                    dv = new Model.DocVendaPCK();
+                    dv.Id = objListCab.Valor("Id");
+                    DateTime dt = objListCab.Valor("Data");
+                    dv.Data = dt.ToString("dd-MM-yyyy");
+                    dv.Entidade = objListCab.Valor("Entidade");
+                    dv.TipoDoc = objListCab.Valor("TipoDoc");
+                    int numDoc = objListCab.Valor("NumDoc");
+                    dv.NumDoc = Convert.ToString(numDoc);
+                    dv.DataCarga = objListCab.Valor("DataCarga");
+                    dv.HoraCarga = objListCab.Valor("HoraCarga");
+                    dv.Serie = objListCab.Valor("Serie");
+                    dv.Documento = objListCab.Valor("Documento");
+                    dv.Estado = objListCab.Valor("Estado");
+                    objListLin = PriEngine.Engine.Consulta("select Sum(PrecoTotalLinha) AS PrecoTotal from (Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans,(PrecUnit * LD.Quantidade+ (PrecUnit*LD.Quantidade*(TaxaIva/100))) as PrecoTotalLinha from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "') as t");
+
+                    while (!objListLin.NoFim())
+                    {
+                        double preco = objListLin.Valor("PrecoTotal");
+                        precoTotal = Convert.ToString(preco);
+                        objListLin.Seguinte();
+                    }
+
+                    objListCab.Seguinte();
+                }
+            }
+
+            return precoTotal;
         }
 
         #endregion
@@ -1015,15 +1080,13 @@ namespace FirstREST.Lib_Primavera
         }
 
 
-        public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> linhas)
-        {
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+        //public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> )
+        //{
+        //    Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
 
-
-            return erro;
-        }
-
-        public static Model.RespostaErro GeneratePickingList(int numencomendas)
+        //    return erro;
+        //}
+        public static Model.RespostaErro GeneratePickingList(int numencomendas, string serie)
         {
 
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
@@ -1041,15 +1104,14 @@ namespace FirstREST.Lib_Primavera
                     StringBuilder sql = new StringBuilder();
                     string query = string.Empty;
 
-                    sql.Append("select LinhasDoc.Artigo,LinhasDoc.Descricao ,LinhasDoc.Localizacao,LinhasDoc.Quantidade,LinhasDoc.DataEntrega,LinhasDoc.IdCabecDoc,CabecDoc.Entidade from LinhasDoc INNER JOIN CabecDoc ON CabecDoc.TipoDoc='ECL' AND LinhasDoc.IdCabecDoc=CabecDoc.Id AND LinhasDoc.Artigo!='NULL' JOIN PickingWave ON LinhasDoc.IdCabecDoc!=PickingWave.IdECL order by LinhasDoc.IdCabecDoc;");
+                    sql.Append("select LinhasDoc.Artigo,LinhasDoc.Descricao ,LinhasDoc.Localizacao,LinhasDoc.Quantidade,LinhasDoc.DataEntrega,LinhasDoc.IdCabecDoc,CabecDoc.Entidade from LinhasDoc INNER JOIN CabecDoc ON CabecDoc.TipoDoc='ECL' AND LinhasDoc.IdCabecDoc=CabecDoc.Id AND LinhasDoc.Artigo!='NULL' AND CabecDoc.Serie='@5@' AND LinhasDoc.Localizacao!='NULL' JOIN PickingWave ON LinhasDoc.IdCabecDoc!=PickingWave.IdECL order by LinhasDoc.IdCabecDoc;");
                     //sql.Append(" WHERE Artigo='@1@'");
                     //sql.Append(" AND Localizacao='@2@'");
 
-<<<<<<< Updated upstream
 
 
-                    //query = sql.ToString();
-                    //query = query.Replace("@1@", artigo.Artigo.CodArtigo);
+                    query = sql.ToString();
+                    query = query.Replace("@5@", serie);
                     //query = query.Replace("@2@", artigo.LocalizacaoEntrada);
                     objList = PriEngine.Engine.Consulta(query);
 
@@ -1136,7 +1198,7 @@ namespace FirstREST.Lib_Primavera
                             query1 = query1.Replace("@3@", pickList[l].lista[b].Quantidade.ToString());
                             query1 = query1.Replace("@4@", pickList[l].Id);
                             PriEngine.Engine.Consulta(query1);
-                            //#TODO 
+
                         }
 
                     }
@@ -1161,12 +1223,6 @@ namespace FirstREST.Lib_Primavera
                 return erro;
             }
 
-=======
-        public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> linhas)
-        {
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
-
->>>>>>> Stashed changes
             return erro;
         }
 
