@@ -1015,12 +1015,13 @@ namespace FirstREST.Lib_Primavera
         }
 
 
-        //public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> )
-        //{
-        //    Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+        public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> linhas)
+        {
+            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
 
-        //    return erro;
-        //}
+
+            return erro;
+        }
         public static Model.RespostaErro GeneratePickingList(int numencomendas)
         {
 
