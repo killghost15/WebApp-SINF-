@@ -1039,7 +1039,7 @@ namespace FirstREST.Lib_Primavera
                     StringBuilder sql = new StringBuilder();
                     string query = string.Empty;
 
-                    sql.Append("select LinhasDoc.Artigo,LinhasDoc.Descricao ,LinhasDoc.Localizacao,LinhasDoc.Quantidade,LinhasDoc.DataEntrega,LinhasDoc.IdCabecDoc,CabecDoc.Entidade from LinhasDoc INNER JOIN CabecDoc ON CabecDoc.TipoDoc='ECL' AND LinhasDoc.IdCabecDoc=CabecDoc.Id AND LinhasDoc.Artigo!='NULL' order by LinhasDoc.IdCabecDoc;");
+                    sql.Append("select LinhasDoc.Artigo,LinhasDoc.Descricao ,LinhasDoc.Localizacao,LinhasDoc.Quantidade,LinhasDoc.DataEntrega,LinhasDoc.IdCabecDoc,CabecDoc.Entidade from LinhasDoc INNER JOIN CabecDoc ON CabecDoc.TipoDoc='ECL' AND LinhasDoc.IdCabecDoc=CabecDoc.Id AND LinhasDoc.Artigo!='NULL' JOIN PickingWave ON LinhasDoc.IdCabecDoc!=PickingWave.IdECL order by LinhasDoc.IdCabecDoc;");
                     //sql.Append(" WHERE Artigo='@1@'");
                     //sql.Append(" AND Localizacao='@2@'");
 
@@ -1061,12 +1061,14 @@ namespace FirstREST.Lib_Primavera
                     Model.Artigo art = new Model.Artigo();
                     Model.Encomenda ecl = new Model.Encomenda();
                     string id = "";
-                    //cria-se uma lista de encomendas a partir do select das linhas das encomendas
                     while (!objList.NoFim())
                     {
 
                         ecl.Id = objList.Valor("LinhasDoc.IdCabecDoc");
-                        ecl.Data = objList.Valor("LinhasDoc.DataEntrega");
+
+                        DateTime dt = objList.Valor("LinhasDoc.DataEntrega");
+
+                        ecl.Data = dt;
                         id = objList.Valor("LinhasDoc.IdCabecDoc");
 
                         art.CodArtigo = objList.Valor("LinhasDoc.Artigo");
@@ -1091,7 +1093,7 @@ namespace FirstREST.Lib_Primavera
                     DateTime min = encomendas[0].Data;
                     int indexmin = 0;
                     List<Model.Encomenda> pickList = new List<Model.Encomenda>();
-                    //seleciona se as encomendas q se vai fazer picking
+                    //selecionar as encomendas para sofrerem o processo de picking
                     for (int k = 0; k < numencomendas; k++)
                     {
                         for (int i = 0; i < encomendas.Count(); i++)
@@ -1108,29 +1110,36 @@ namespace FirstREST.Lib_Primavera
                         pickList.Add(encomendas[indexmin]);
                     }
 
-                    //percorrer as localizacoes nos elementos das encomendas para escolher qual o artigo mais proximo
                     StringBuilder sql1 = new StringBuilder();
                     string query1 = string.Empty;
 
-                    sql1.Append("insert into pickingwave (Localizacao,Artigo,Quantidade,IdECL,Estado) values ('@1@','@2@','@3@','@4@',0");
 
 
 
-
-
-                    query1 = sql1.ToString();
-
-                    objList = PriEngine.Engine.Consulta(query);
                     //Pegar no conjunto de encomendas selecionadas e criar as picking waves
+                    //Falta ir procurar qual a localizacao mais proxima
                     for (int l = 0; l < pickList.Count(); l++)
                     {
                         for (int b = 0; b < pickList[l].lista.Count(); b++)
                         {
-                            query1 = query1.Replace("@1@", pickList[l].lista[b].CodArtigo);
+                            sql1 = new StringBuilder();
+                            query1 = string.Empty;
+                            sql1.Append("insert into pickingwave (Localizacao,Artigo,Quantidade,IdECL,Estado) values ('@1@','@2@','@3@','@4@',0");
+                            query1 = sql1.ToString();
+
+                            query1 = query1.Replace("@1@", pickList[l].lista[b].localizacao);
+                            query1 = query1.Replace("@2@", pickList[l].lista[b].CodArtigo);
+
+                            query1 = query1.Replace("@3@", pickList[l].lista[b].Quantidade.ToString());
+                            query1 = query1.Replace("@4@", pickList[l].Id);
+                            PriEngine.Engine.Consulta(query1);
                             //#TODO 
                         }
 
                     }
+
+
+
                 }
                 else
                 {
