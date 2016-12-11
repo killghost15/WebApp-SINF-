@@ -1,0 +1,16 @@
+ALTER TABLE dbo.Funcionarios
+ADD Password NVARCHAR(50);
+
+UPDATE dbo.Funcionarios
+set Password = case Codigo
+                  when '001' then 'mariajoao2016'
+                  when 'A001' then 'filomena2016'
+				  when 'A002' then 'joaocarlos2016'
+				  when 'A003' then 'carlaalex2016'
+				  when 'A017' then 'filipe2016'
+				  when 'B001' then 'luis2016'
+				  when 'D002' then 'sandra2016'
+				  when 'F001' then 'anacasaco2016'
+				  when 'F002' then 'olga2016'
+				  when 'F003' then 'anapinto2016'
+                end;
