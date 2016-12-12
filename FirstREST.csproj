@@ -247,6 +247,7 @@
     <Compile Include="Controllers\DocCompraController.cs" />
     <Compile Include="Controllers\DocVendaController.cs" />
     <Compile Include="Controllers\EncomendaDeClientesPCKController.cs" />
+    <Compile Include="Controllers\FuncionariosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocalizacoesArmazemController.cs" />
     <Compile Include="Controllers\TransfItemPckAreaController.cs" />
@@ -255,6 +256,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Lib_Primavera\Model\ArtigoArmazem.cs" />
+    <Compile Include="Lib_Primavera\Model\Encomenda.cs" />
     <Compile Include="Lib_Primavera\Model\Funcionario.cs" />
     <Compile Include="Lib_Primavera\Model\CriaGuiaDeRemessa.cs" />
     <Compile Include="Lib_Primavera\Model\DocVendaPCK.cs" />
@@ -283,7 +285,12 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\SINFcss\carousel.css" />
+    <Content Include="Content\SINFcss\login.css" />
+    <Content Include="Content\SINFcss\navbar_dropdown.css" />
+    <Content Include="Content\SINFcss\table_filter.css" />
     <Content Include="Content\styles.css" />
+    <Content Include="Content\table_filter.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -415,6 +422,8 @@
     <Content Include="Views\Home\Encomendas.cshtml" />
     <Content Include="Views\Home\Encomenda.cshtml" />
     <Content Include="Views\Home\Transferencia_Armazem.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

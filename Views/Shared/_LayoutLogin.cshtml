@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" href="http://a2.mzstatic.com/eu/r30/Purple49/v4/1f/52/97/1f52977a-f884-a33a-d552-9462b15e1602/icon175x175.jpeg">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/SINFcss/login.css")
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/bootstrap.min.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Scripts/bootstrap.min.js")
+    @Scripts.Render("~/bundles/SINFjs")
+</head>
+<body>
+
+
+@RenderBody()
+
+@RenderSection("scripts", required: false)
+
+</body>
+</html>

@@ -38,7 +38,7 @@ namespace FirstREST.Lib_Primavera
 
                     func.Nome = objListFunc.Valor("Nome");
                     func.Email = objListFunc.Valor("Email");
-                    func.Email = objListFunc.Valor("Password");
+                    func.Password = objListFunc.Valor("Password");
 
                     listfunc.Add(func);
                     objListFunc.Seguinte();

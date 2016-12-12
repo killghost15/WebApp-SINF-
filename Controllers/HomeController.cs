@@ -70,5 +70,46 @@ namespace FirstREST.Controllers
             ViewBag.precoTotal = cont.GetTotalPrice(id);
             return View("/Views/Home/Encomenda.cshtml");
         }
+
+        public ActionResult Login()
+        {   
+            if(Session["LoggedIn"] == null) {
+                return View("/Views/Home/Login.cshtml");
+            }
+            return View("/Views/Home/Index.cshtml");
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public void Index(String Email, String Password)
+        {
+            FuncionariosController cont = new FuncionariosController();
+            IEnumerable<Lib_Primavera.Model.Funcionario> funcs = cont.Get();
+
+            bool found  = false;
+            string nome="";
+
+            foreach (var func in funcs)
+            {
+                if (func.Email.Equals(Email) && func.Password.Equals(Password))
+                {
+                    nome = func.Nome;
+                    found = true;
+                }
+            }
+
+            ViewBag.Email = Email;
+            ViewBag.Password = Password;
+
+            if (!found)
+                Response.Redirect("/Home/Login");
+            else
+            {
+                Session.Add("email", Email);
+                Session.Add("name", nome);
+                Session["LoggedIn"] = "1";
+                Response.Redirect("/Home/Index",false);
+            }
+        }
+
     }
 }
