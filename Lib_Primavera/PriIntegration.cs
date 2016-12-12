@@ -14,6 +14,42 @@ namespace FirstREST.Lib_Primavera
     public class PriIntegration
     {
 
+        # region Funcionario
+
+        public static List<Model.Funcionario> GetFuncionarios()
+        {
+            StdBELista objListFunc;
+            Model.Funcionario func = new Model.Funcionario();
+            List<Model.Funcionario> listfunc = new List<Model.Funcionario>();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                sql.Append("SELECT Nome, Email, Password FROM Funcionarios");
+
+                query = sql.ToString();
+
+                objListFunc = PriEngine.Engine.Consulta(query);
+                while (!objListFunc.NoFim())
+                {
+                    func = new Model.Funcionario();
+
+                    func.Nome = objListFunc.Valor("Nome");
+                    func.Email = objListFunc.Valor("Email");
+                    func.Email = objListFunc.Valor("Password");
+
+                    listfunc.Add(func);
+                    objListFunc.Seguinte();
+                }
+            }
+
+            return listfunc;
+        }
+
+        # endregion
+
         # region Cliente
 
         /* Função que devolve uma lista com todos os clientes */
@@ -1227,6 +1263,7 @@ namespace FirstREST.Lib_Primavera
         }
 
         #endregion
+
 
     }
 }
