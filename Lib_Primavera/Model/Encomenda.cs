@@ -19,7 +19,7 @@ namespace FirstREST.Lib_Primavera.Model
             get;
             set;
         }
-        public List<Model.Artigo> lista
+        public List<Model.LinhaDaPickList> lista
         {
             get;
             set;

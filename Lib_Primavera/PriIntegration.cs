@@ -1122,7 +1122,7 @@ namespace FirstREST.Lib_Primavera
 
         //    return erro;
         //}
-        public static Model.RespostaErro GeneratePickingList(int numencomendas, string serie)
+        public static Model.RespostaErro GeneratePickingList(int spacebin, string serie, int numencomendas)
         {
 
             Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
@@ -1140,7 +1140,7 @@ namespace FirstREST.Lib_Primavera
                     StringBuilder sql = new StringBuilder();
                     string query = string.Empty;
 
-                    sql.Append("select LinhasDoc.Artigo,LinhasDoc.Descricao ,LinhasDoc.Localizacao,LinhasDoc.Quantidade,LinhasDoc.DataEntrega,LinhasDoc.IdCabecDoc,CabecDoc.Entidade from LinhasDoc INNER JOIN CabecDoc ON CabecDoc.TipoDoc='ECL' AND LinhasDoc.IdCabecDoc=CabecDoc.Id AND LinhasDoc.Artigo!='NULL' AND CabecDoc.Serie='@5@' AND LinhasDoc.Localizacao!='NULL' JOIN PickingWave ON LinhasDoc.IdCabecDoc!=PickingWave.IdECL order by LinhasDoc.IdCabecDoc;");
+                    sql.Append("select LinhasDoc.Artigo,LinhasDoc.Localizacao,LinhasDoc.Quantidade,LinhasDoc.IdCabecDoc,LinhasDoc.Id,LinhasDoc.DataEntrega from LinhasDoc INNER JOIN CabecDoc ON CabecDoc.TipoDoc='ECL' AND LinhasDoc.IdCabecDoc=CabecDoc.Id AND LinhasDoc.Artigo!='NULL' AND CabecDoc.Serie='@5@' AND LinhasDoc.Localizacao!='NULL' order by LinhasDoc.DataEntrega ASC,LinhasDoc.IdCabecDoc DESC;");
                     //sql.Append(" WHERE Artigo='@1@'");
                     //sql.Append(" AND Localizacao='@2@'");
 
@@ -1159,7 +1159,7 @@ namespace FirstREST.Lib_Primavera
                     }
 
                     List<Model.Encomenda> encomendas = new List<Model.Encomenda>();
-                    Model.Artigo art = new Model.Artigo();
+                    Model.LinhaDaPickList art = new Model.LinhaDaPickList();
                     Model.Encomenda ecl = new Model.Encomenda();
                     string id = "";
                     while (!objList.NoFim())
@@ -1170,12 +1170,12 @@ namespace FirstREST.Lib_Primavera
                         DateTime dt = objList.Valor("LinhasDoc.DataEntrega");
 
                         ecl.Data = dt;
-                        id = objList.Valor("LinhasDoc.IdCabecDoc");
+
 
                         art.CodArtigo = objList.Valor("LinhasDoc.Artigo");
-                        art.DescArtigo = objList.Valor("LinhasDoc.Descricao");
+                        art.IdLinha = objList.Valor("LinhasDoc.Id");
                         art.Quantidade = objList.Valor("LinhasDoc.Quantidade");
-                        art.localizacao = objList.Valor("LinhasDoc.Localizacao");
+                        art.Localizacao = objList.Valor("LinhasDoc.Localizacao");
                         ecl.lista.Add(art);
                         objList.Seguinte();
                         if (objList.NoFim())
@@ -1225,14 +1225,15 @@ namespace FirstREST.Lib_Primavera
                         {
                             sql1 = new StringBuilder();
                             query1 = string.Empty;
-                            sql1.Append("insert into pickingwave (Localizacao,Artigo,Quantidade,IdECL,Estado) values ('@1@','@2@','@3@','@4@',0");
+                            sql1.Append("insert into PickingList (Localizacao,Artigo,Quantidade,IdCabecDoc,idLinha,EstadoTratado) values ('@1@','@2@','@3@','@4@','@6@',0");
                             query1 = sql1.ToString();
 
-                            query1 = query1.Replace("@1@", pickList[l].lista[b].localizacao);
+                            query1 = query1.Replace("@1@", pickList[l].lista[b].Localizacao);
                             query1 = query1.Replace("@2@", pickList[l].lista[b].CodArtigo);
 
                             query1 = query1.Replace("@3@", pickList[l].lista[b].Quantidade.ToString());
                             query1 = query1.Replace("@4@", pickList[l].Id);
+                            query1 = query1.Replace("@6@", pickList[l].lista[b].IdLinha);
                             PriEngine.Engine.Consulta(query1);
 
                         }
@@ -1261,6 +1262,7 @@ namespace FirstREST.Lib_Primavera
 
             return erro;
         }
+        
 
         #endregion
 
