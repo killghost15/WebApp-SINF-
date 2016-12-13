@@ -247,6 +247,7 @@
     <Compile Include="Controllers\DocCompraController.cs" />
     <Compile Include="Controllers\DocVendaController.cs" />
     <Compile Include="Controllers\EncomendaDeClientesPCKController.cs" />
+    <Compile Include="Controllers\FuncionariosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocalizacoesArmazemController.cs" />
     <Compile Include="Controllers\TransfItemPckAreaController.cs" />
@@ -257,6 +258,9 @@
     <Compile Include="Lib_Primavera\Model\ArtigoArmazem.cs" />
     <Compile Include="Lib_Primavera\Model\CriaGuiaDeRemessa.cs" />
     <Compile Include="Lib_Primavera\Model\DocVendaPCK.cs" />
+    <Compile Include="Lib_Primavera\Model\Encomenda.cs" />
+    <Compile Include="Lib_Primavera\Model\Funcionario.cs" />
+    <Compile Include="Lib_Primavera\Model\LinhaDaPickList.cs" />
     <Compile Include="Lib_Primavera\Model\LinhaDocVendaPCK.cs" />
     <Compile Include="Lib_Primavera\Model\LocalizacaoArmazem.cs" />
     <Compile Include="Lib_Primavera\Model\TransItemPckArea.cs" />
@@ -414,6 +418,7 @@
     <Content Include="Views\Home\Encomendas.cshtml" />
     <Content Include="Views\Home\Encomenda.cshtml" />
     <Content Include="Views\Home\Transferencia_Armazem.cshtml" />
+    <Content Include="Views\Home\View_Orders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
