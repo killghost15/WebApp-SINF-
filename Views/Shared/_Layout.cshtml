@@ -131,7 +131,7 @@
         $(function () {
 
             $("a").click(function () {
-                $("body").after("<div id='loader'><img src='/Content/images/loader-128x/Preloader_1.gif' alt='loading'/></div>").fadeIn();
+                $("body").append("<div id='loader'><div class='spinner'></div></div>").fadeIn();
             });
 
         });
