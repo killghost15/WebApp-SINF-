@@ -259,11 +259,8 @@
     <Compile Include="Lib_Primavera\Model\CriaGuiaDeRemessa.cs" />
     <Compile Include="Lib_Primavera\Model\DocVendaPCK.cs" />
     <Compile Include="Lib_Primavera\Model\Encomenda.cs" />
-<<<<<<< Updated upstream
     <Compile Include="Lib_Primavera\Model\Funcionario.cs" />
     <Compile Include="Lib_Primavera\Model\LinhaDaPickList.cs" />
-=======
->>>>>>> Stashed changes
     <Compile Include="Lib_Primavera\Model\LinhaDocVendaPCK.cs" />
     <Compile Include="Lib_Primavera\Model\LocalizacaoArmazem.cs" />
     <Compile Include="Lib_Primavera\Model\TransItemPckArea.cs" />
@@ -289,8 +286,6 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-<<<<<<< HEAD
-=======
     <Content Include="Content\images\loader-128x\Preloader_1.gif" />
     <Content Include="Content\images\loader-128x\Preloader_2.gif" />
     <Content Include="Content\images\loader-128x\Preloader_3.gif" />
@@ -316,7 +311,6 @@
     <Content Include="Content\SINFcss\login.css" />
     <Content Include="Content\SINFcss\navbar_dropdown.css" />
     <Content Include="Content\SINFcss\table_filter.css" />
->>>>>>> 20da9a372c162f7ba5b55b59d207ac1f9dd6b178
     <Content Include="Content\styles.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
