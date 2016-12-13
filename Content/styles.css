@@ -22,3 +22,13 @@
     .navbar .nav-collapse .navbar-form { margin: 0; }
     .nav-collapse>li { float: none; }
 }
+
+.loading {
+    position:fixed;
+    width:500px;
+    height:600px;
+    margin:-300px auto auto -250px;
+    top:50%;
+    left:50%;
+    text-align:center;
+}

@@ -12,6 +12,7 @@ body {
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
+
 }
 
 a {
@@ -754,3 +755,8 @@ tr.pager td {
             margin: 0;
         }
 }
+
+#loader { position:absolute;
+left:0px;
+top:0px;
+z-index:-1;}
