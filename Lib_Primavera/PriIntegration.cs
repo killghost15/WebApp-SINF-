@@ -1242,11 +1242,22 @@ namespace FirstREST.Lib_Primavera
                         pickList.Add(encomendas[indexmin]);
                     }
 
+
+
                     StringBuilder sql1 = new StringBuilder();
                     string query1 = string.Empty;
-
-
-
+                    int proxid;
+                    //
+                    StdBELista s = PriEngine.Engine.Consulta("select Max(Id) as proxid from PickingList");
+                    if (s.Vazia())
+                    {
+                        proxid = 0;
+                    }
+                    else
+                    {
+                        proxid = s.Valor("proxid");
+                        proxid++;
+                    }
 
                     //Pegar no conjunto de encomendas selecionadas e criar as picking waves
                     //Falta ir procurar qual a localizacao mais proxima
@@ -1256,7 +1267,7 @@ namespace FirstREST.Lib_Primavera
                         {
                             sql1 = new StringBuilder();
                             query1 = string.Empty;
-                            sql1.Append("insert into PickingList (Localizacao,Artigo,Quantidade,IdCabecDoc,idLinha,EstadoTratado) values ('@1@','@2@','@3@','@4@','@6@',0");
+                            sql1.Append("insert into PickingList (Id,Localizacao,Artigo,Quantidade,IdECL,EstadoTratado) values (@5@,'@1@','@2@',@3@,'@4@',0");
                             query1 = sql1.ToString();
 
                             query1 = query1.Replace("@1@", pickList[l].lista[b].Localizacao);
@@ -1264,8 +1275,12 @@ namespace FirstREST.Lib_Primavera
 
                             query1 = query1.Replace("@3@", pickList[l].lista[b].Quantidade.ToString());
                             query1 = query1.Replace("@4@", pickList[l].Id);
-                            query1 = query1.Replace("@6@", pickList[l].lista[b].IdLinha);
+                            query1 = query1.Replace("@5@", proxid.ToString());
+
+
+
                             PriEngine.Engine.Consulta(query1);
+
 
                         }
 
