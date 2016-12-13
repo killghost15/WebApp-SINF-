@@ -1098,8 +1098,8 @@ namespace FirstREST.Lib_Primavera
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
                 {
                     var data = DateTime.Now;
-                    documento.set_Tipodoc("TRA");
-                    documento.set_Serie("2016");
+                    documento.set_Tipodoc(artigo.TipoDoc);
+                    documento.set_Serie(artigo.Serie);
 
                     documento.set_ArmazemOrigem(artigo.ArmazemOrigem);
                     documento.set_DataDoc(data);
@@ -1146,6 +1146,36 @@ namespace FirstREST.Lib_Primavera
             return erro;
         }
 
+        public static List<string> TransferenciaSerie(string tipoDoc)
+        {
+            StdBELista objList;
+            List<string> lis = new List<string>();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
+                sql.Append("SELECT DISTINCT Serie from CabecStk");
+                sql.Append(" WHERE TipoDoc='@1@'");
+
+                query = sql.ToString();
+                query = query.Replace("@1@", tipoDoc);
+
+                objList = PriEngine.Engine.Consulta(query);
+
+                while (!objList.NoFim())
+                {
+                    string temp = "";
+                    temp = objList.Valor("Serie");
+                    lis.Add(temp);
+                    objList.Seguinte();
+                }
+            }
+
+            return lis;
+        }
 
         //public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> )
         //{

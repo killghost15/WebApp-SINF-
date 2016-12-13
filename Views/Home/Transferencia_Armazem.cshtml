@@ -14,6 +14,26 @@
 
 <form id="productForm" action="/Home/Transferencia" method="POST" class="form-horizontal">
     <br /><br />
+
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Tipo de Documento</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <input type="text" class="form-control" name="TipoDoc" id="tipoDocDisable" disabled value="TRA" />
+        </div>
+        <input name="TipoDoc" id="TipoDoc" hidden value="TRA" />
+    </div>
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Serie</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <select class="form-control" name="Serie" id="Serie">
+                @foreach (var art in ViewBag.test1)
+                {
+                    <option value="@art">@art</option>
+                }
+            </select>
+        </div>
+    </div>
+
     <div class="form-group">
         <label class="col-xs-3 control-label">Artigo a transferir</label>
         <div class="col-xs-5 selectContainer" style="width: 65%">

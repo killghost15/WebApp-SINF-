@@ -9,6 +9,10 @@ namespace FirstREST.Lib_Primavera.Model
     {
         public Artigo Artigo { get; set; }
 
+        public string TipoDoc { get; set; }
+
+        public string Serie { get; set; }
+
         public string ArmazemOrigem { get; set; }
 
         public string ArmazemDestino { get; set; }
@@ -16,8 +20,6 @@ namespace FirstREST.Lib_Primavera.Model
         public string LocalizacaoOrigem { get; set; }
 
         public string LocalizacaoDestino { get; set; }
-
-        //public string LocalizacaoOrigem { get; set; }
 
         public int Quantidade { get; set; }
     }

@@ -28,5 +28,10 @@ namespace FirstREST.Controllers
             }
 
         }
+
+        public List<string> GetSerie(string tipoDoc)
+        {
+            return Lib_Primavera.PriIntegration.TransferenciaSerie(tipoDoc);
+        }
     }
 }

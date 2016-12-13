@@ -13,10 +13,13 @@ namespace FirstREST.Controllers
             return View("/Views/Home/Index.cshtml");
         }
 
-        public ActionResult TransferenciaArmazem()
+        public ActionResult TransferenciaArmazem(string tipoDoc)
         {
             ArtigoArmazemController cont = new ArtigoArmazemController();
             LocalizacoesArmazemController cont2 = new LocalizacoesArmazemController();
+
+            TransfItemPckAreaController cont3 = new TransfItemPckAreaController();
+            ViewBag.test1 = cont3.GetSerie(tipoDoc);
             
             ViewBag.artigosArmazem = cont.Get();
             var lista_artigos = ViewBag.artigosArmazem;
@@ -119,7 +122,7 @@ namespace FirstREST.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
-        public void Transferencia(string Artigo, string Localizacao_Origem, string Localizacao_Destino, string Quantidade)
+        public void Transferencia(string Artigo, string Localizacao_Origem, string Localizacao_Destino, string Quantidade, string TipoDoc, string Serie)
         {
             ArtigosController cont = new ArtigosController();
             var lista_artigos = cont.Get();
@@ -141,6 +144,8 @@ namespace FirstREST.Controllers
                     transferencia.Artigo = artigo;
             }
 
+            transferencia.TipoDoc = TipoDoc;
+            transferencia.Serie = Serie;
             transferencia.LocalizacaoOrigem = Localizacao_Origem;
             transferencia.ArmazemOrigem = Localizacao_Origem[0] + "" + Localizacao_Origem[1];
 
