@@ -63,6 +63,13 @@ namespace FirstREST.Controllers
             return View("/Views/Home/Encomendas.cshtml");
         }
 
+        public ActionResult Orders(string tipoDoc)
+        {
+            EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
+            ViewBag.test = cont.GetSerie(tipoDoc);
+            return View("/Views/Home/View_Orders.cshtml");
+        }
+
         public ActionResult Encomenda(string id)
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();

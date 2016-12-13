@@ -31,5 +31,10 @@ namespace FirstREST.Controllers
             return Lib_Primavera.PriIntegration.Encomendas_List_PCK_TotalPrice(id);
         }
 
+        public List<string> GetSerie(string tipoDoc)
+        {
+            return Lib_Primavera.PriIntegration.EncomendaSerie(tipoDoc);
+        }
+
     }
 }

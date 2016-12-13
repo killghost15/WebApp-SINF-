@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "View_Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View Orders</h2>
+
+<style type="text/css">
+    /* Adjust feedback icon position */
+    #productForm .selectContainer .form-control-feedback,
+    #productForm .inputGroupContainer .form-control-feedback {
+        right: -15px;
+    }
+</style>
+
+<form id="productForm" action="/Home/Encomendas" method="GET" class="form-horizontal">
+    <br /><br />
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Tipo de Documento</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <input type="text" class="form-control" name="tipoDoc" id="tipoDocDisable" disabled value="ECL" />
+        </div>
+        <input name="tipoDoc" id="tipoDoc" hidden value="ECL" />
+    </div>
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Serie</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <select class="form-control" name="serie" id="select_artigo">
+                @foreach (var artigo in ViewBag.test)
+                {
+                    <option value="@artigo">@artigo</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Estado</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <select class="form-control" name="estado" id="estado">
+                <option value="p">Pendentes</option>
+                <option value="t">Transformadas</option>
+            </select>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-xs-5 col-xs-offset-3">
+            <button type="submit" class="btn btn-default">View</button>
+        </div>
+    </div>
+</form>
