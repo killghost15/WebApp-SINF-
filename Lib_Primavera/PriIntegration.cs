@@ -610,7 +610,7 @@ namespace FirstREST.Lib_Primavera
             {
                 if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
                 {
-                    myart.set_Artigo(art.ArtigoId);
+                    myart.set_Artigo(art.CodArtigo);
                     myart.set_Armazem(art.Armazem);
                     myart.set_Localizacao(art.Localizacao);
                     myart.set_StkActual(art.StockAtual);
@@ -656,7 +656,7 @@ namespace FirstREST.Lib_Primavera
                     listartigos.Add(new Model.ArtigoArmazem
                     {
                         Localizacao = objList.Valor("Localizacao"),
-                        ArtigoId = objList.Valor("Artigo"),
+                        CodArtigo = objList.Valor("Artigo"),
                         Armazem = objList.Valor("Armazem"),
                         StockAtual = objList.Valor("StkActual")
                     });
@@ -1028,7 +1028,7 @@ namespace FirstREST.Lib_Primavera
 
                     query = sql.ToString();
                     query = query.Replace("@1@", artigo.Artigo.CodArtigo);
-                    query = query.Replace("@2@", artigo.LocalizacaoEntrada);
+                    query = query.Replace("@2@", artigo.LocalizacaoDestino);
                     objList = PriEngine.Engine.Consulta(query);
                    
                     if (objList==null) {
@@ -1068,20 +1068,20 @@ namespace FirstREST.Lib_Primavera
                 {
                     var data = DateTime.Now;
                     documento.set_Tipodoc("TRA");
-                    documento.set_Serie(artigo.serie);
+                    documento.set_Serie("2016");
 
-                    documento.set_ArmazemOrigem(artigo.ArmazemSaida);
+                    documento.set_ArmazemOrigem(artigo.ArmazemOrigem);
                     documento.set_DataDoc(data);
 
                     GcpBELinhasDocumentoStock lines = new GcpBELinhasDocumentoStock();
                     GcpBELinhasDocumentoStock item_lines = new GcpBELinhasDocumentoStock();
-                    PriEngine.Engine.Comercial.Stocks.AdicionaLinha(documento, Artigo: artigo.Artigo.CodArtigo, Quantidade: artigo.Quantidade, Armazem: artigo.ArmazemEntrada, Localizacao: artigo.LocalizacaoEntrada);           
+                    PriEngine.Engine.Comercial.Stocks.AdicionaLinha(documento, Artigo: artigo.Artigo.CodArtigo, Quantidade: artigo.Quantidade, Armazem: artigo.ArmazemDestino, Localizacao: artigo.LocalizacaoDestino);           
                     item_lines = documento.get_Linhas();
 
                     for (var i = 1; i <= item_lines.NumItens; ++i)
                     {
                         var line = item_lines.get_Edita(i);
-                        line.set_LocalizacaoOrigem(artigo.LocalizacaoSaida);
+                        line.set_LocalizacaoOrigem(artigo.LocalizacaoOrigem);
                         line.set_DataStock(data);
                         lines.Insere(line);
                     }

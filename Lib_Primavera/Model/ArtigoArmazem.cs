@@ -15,7 +15,7 @@ namespace FirstREST.Lib_Primavera.Model
 
         public double StockAtual { get; set; }
 
-        public string ArtigoId { get; set; }
+        public string CodArtigo { get; set; }
 
         public string Armazem { get; set; }
     }

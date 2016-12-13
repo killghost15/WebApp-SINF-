@@ -25,7 +25,7 @@ namespace FirstREST.Controllers
             string artigosLocalizacao_string = "";
 
             foreach (var artigo in lista_artigos) {
-                artigosId_string = artigosId_string + artigo.ArtigoId + ",";
+                artigosId_string = artigosId_string + artigo.CodArtigo + ",";
                 artigosLocalizacao_string = artigosLocalizacao_string + artigo.Localizacao + ",";
             }
 
@@ -109,6 +109,43 @@ namespace FirstREST.Controllers
                 Session["LoggedIn"] = "1";
                 Response.Redirect("/Home/Index",false);
             }
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public void Transferencia(string Artigo, string Localizacao_Origem, string Localizacao_Destino, string Quantidade)
+        {
+            ArtigosController cont = new ArtigosController();
+            var lista_artigos = cont.Get();
+
+            // Número de artigos distintos no armazém
+            int listaArtigos_length = 0;
+            foreach (var artigo in lista_artigos)
+            {
+                listaArtigos_length++;
+            }
+
+            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
+            Lib_Primavera.Model.TransItemPckArea transferencia = new Lib_Primavera.Model.TransItemPckArea();
+
+            // Percorre a lista de artigos até encontrar um artigo com o Id passado como argumento desta função
+            foreach (var artigo in lista_artigos)
+            {
+                if (artigo.CodArtigo == Artigo)
+                    transferencia.Artigo = artigo;
+            }
+
+            transferencia.LocalizacaoOrigem = Localizacao_Origem;
+            transferencia.ArmazemOrigem = Localizacao_Origem[0] + "" + Localizacao_Origem[1];
+
+            transferencia.LocalizacaoDestino = Localizacao_Destino;
+            transferencia.ArmazemDestino = Localizacao_Destino[0] + "" + Localizacao_Destino[1];
+
+            transferencia.Quantidade = Int32.Parse(Quantidade);
+
+            erro = Lib_Primavera.PriIntegration.TransfereItemPickingArea(transferencia);
+
+            Console.Write(Artigo);
+            Response.Redirect("/Home");
         }
 
     }

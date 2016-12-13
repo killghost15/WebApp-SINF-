@@ -12,15 +12,16 @@
     }
 </style>
 
-<form id="productForm" method="post" class="form-horizontal">
+<form id="productForm" action="/Home/Transferencia" method="POST" class="form-horizontal">
     <br /><br />
     <div class="form-group">
         <label class="col-xs-3 control-label">Artigo a transferir</label>
         <div class="col-xs-5 selectContainer" style="width: 65%">
-            <select class="form-control" name="size" id="select_artigo">
+            <select class="form-control" name="Artigo" id="select_artigo">
                 <option>Selecione um artigo para efetuar a transferência</option>
-                @foreach (var artigo in ViewBag.artigosArmazem) {
-                    <option value="@artigo.ArtigoId">@artigo.ArtigoId</option>
+                @foreach (var artigo in ViewBag.artigosArmazem)
+                {
+                    <option value="@artigo.CodArtigo">@artigo.CodArtigo</option>
                 }
             </select>
         </div>
@@ -34,7 +35,7 @@
         var artigosId_array = artigosId_string.split(",");
         var artigosLocalizacao_array = artigosLocalizacao_string.split(",");
         var localizacoesLocalizacao_array = localizacoesLocalizacao_string.split(",");
-            
+
         // Executed each time a value is selected in dropdown 1
         $(function () {
             $('#select_artigo').change(function () {
@@ -44,7 +45,7 @@
                 $('#select_localizacaoOrigem').html('');
                 $('#select_localizacaoDestino').html('');
 
-                var numArtigos = artigosId_array.length;  // número de artigos 
+                var numArtigos = artigosId_array.length;  // número de artigos
 
                 // Para cada artigo, se este é igual ao artigo selecionado, acrescenta uma opção de localização ao dropdown 2
                 for (var i = 0; i < numArtigos; i++) {
@@ -88,27 +89,27 @@
                     $('#select_localizacaoDestino').append('<option>' + localizacoesVazias_array[k] + '</option>');
                 }
             });
-        });        
+        });
     </script>
 
     <div class="form-group">
         <label class="col-xs-3 control-label">Localização de origem</label>
         <div class="col-xs-5 selectContainer" style="width: 65%">
-            <select class="form-control" name="color" id="select_localizacaoOrigem"></select>
+            <select class="form-control" name="Localizacao_Origem" id="select_localizacaoOrigem"></select>
         </div>
     </div>
 
     <div class="form-group">
         <label class="col-xs-3 control-label">Localização de destino</label>
         <div class="col-xs-5 selectContainer" style="width: 65%">
-            <select class="form-control" name="size" id="select_localizacaoDestino"></select>
+            <select class="form-control" name="Localizacao_Destino" id="select_localizacaoDestino"></select>
         </div>
     </div>
 
     <div class="form-group">
         <label class="col-xs-3 control-label">Quantidade a transferir</label>
         <div class="col-xs-5" style="width: 65%">
-            <input type="text" class="form-control" name="name" />
+            <input type="text" class="form-control" name="Quantidade" />
         </div>
     </div>
     <br />
@@ -118,3 +119,4 @@
         </div>
     </div>
 </form>
+
