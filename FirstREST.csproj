@@ -259,8 +259,11 @@
     <Compile Include="Lib_Primavera\Model\CriaGuiaDeRemessa.cs" />
     <Compile Include="Lib_Primavera\Model\DocVendaPCK.cs" />
     <Compile Include="Lib_Primavera\Model\Encomenda.cs" />
+<<<<<<< Updated upstream
     <Compile Include="Lib_Primavera\Model\Funcionario.cs" />
     <Compile Include="Lib_Primavera\Model\LinhaDaPickList.cs" />
+=======
+>>>>>>> Stashed changes
     <Compile Include="Lib_Primavera\Model\LinhaDocVendaPCK.cs" />
     <Compile Include="Lib_Primavera\Model\LocalizacaoArmazem.cs" />
     <Compile Include="Lib_Primavera\Model\TransItemPckArea.cs" />
