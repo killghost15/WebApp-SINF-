@@ -260,6 +260,7 @@
     <Compile Include="Lib_Primavera\Model\DocVendaPCK.cs" />
     <Compile Include="Lib_Primavera\Model\Encomenda.cs" />
     <Compile Include="Lib_Primavera\Model\Funcionario.cs" />
+    <Compile Include="Lib_Primavera\Model\LinhasStk.cs" />
     <Compile Include="Lib_Primavera\Model\LinhaDaPickList.cs" />
     <Compile Include="Lib_Primavera\Model\LinhaDocVendaPCK.cs" />
     <Compile Include="Lib_Primavera\Model\LocalizacaoArmazem.cs" />
@@ -421,6 +422,7 @@
     <Content Include="Views\Home\Transferencia_Armazem.cshtml" />
     <Content Include="Views\Home\View_Orders.cshtml" />
     <Content Include="Views\Home\View_Transferencias.cshtml" />
+    <Content Include="Views\Home\LinhasTransferencia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

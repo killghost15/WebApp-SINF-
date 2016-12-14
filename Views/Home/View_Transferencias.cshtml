@@ -13,7 +13,7 @@
     }
 </style>
 
-<form id="transfForm" action="/Home/TranferenciasLinhas" method="GET" class="form-horizontal">
+<form id="transfForm" action="/Home/TransferenciasLinhas" method="GET" class="form-horizontal">
     <br /><br />
     <div class="form-group">
         <label class="col-xs-3 control-label">Tipo de Documento</label>
@@ -48,7 +48,7 @@
                         for(j; j>0; j--)
                             $('#num').append('<option>' + j + '</option>');
                         break;
-                    }                       
+                    }
                 }
             });
         });
@@ -56,9 +56,7 @@
     <div class="form-group">
         <label class="col-xs-3 control-label">Doc Number</label>
         <div class="col-xs-5 selectContainer" style="width: 65%">
-            <select class="form-control" name="num" id="num">
- 
-            </select>
+            <select class="form-control" name="num" id="num"></select>
         </div>
     </div>
     <br />

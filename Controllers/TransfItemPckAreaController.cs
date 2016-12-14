@@ -39,9 +39,9 @@ namespace FirstREST.Controllers
             return Lib_Primavera.PriIntegration.TransferenciaNumsSerie(tipoDoc);
         }
 
-        public IList<FirstREST.Lib_Primavera.Model.TransferenciasObj> GetTransferenciasLinhas(string tipoDoc, string serie, int num)
+        public IList<FirstREST.Lib_Primavera.Model.LinhasStk> GetTransferenciasLinhas(string tipoDoc, string serie, int num)
         {
-            return Lib_Primavera.PriIntegration.TransferenciaNumsSerie(tipoDoc);
+            return Lib_Primavera.PriIntegration.TransferenciasLinhas(tipoDoc, serie, num);
         }
     }
 }

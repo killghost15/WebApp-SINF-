@@ -75,8 +75,9 @@ namespace FirstREST.Controllers
 
         public ActionResult TransferenciasLinhas(string tipoDoc, string serie, int num)
         {
-            
-            return View("/Views/Home/index");
+            TransfItemPckAreaController trns = new TransfItemPckAreaController();
+            ViewBag.test3 = trns.GetTransferenciasLinhas(tipoDoc, serie, num);
+            return View("/Views/Home/LinhasTransferencia.cshtml");
         }
 
         public ActionResult Orders(string tipoDoc)

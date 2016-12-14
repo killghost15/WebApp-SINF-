@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Linhas Transferencia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Linhas Transferencia</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h3 class="panel-title">Transferencia @ViewBag.test3[0].NumDoc</h3>
+                <div class="pull-right">
+                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="filters">
+                        <th><input type="text" class="form-control" placeholder="Tipo" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Num" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Linha" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Quant" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Data" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Armazem" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Local" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Local Ori" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Lote" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="E/S" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Serie" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Descricao" disabled></th>
+                    </tr>
+                </thead>
+                <tbody class="table-hover">
+                    @foreach (var lin in ViewBag.test3)
+                    {
+                        <tr>
+                            <td>@lin.TipoDoc</td>
+                            <td>@lin.NumDoc</td>
+                            <td>@lin.NumLinha</td>
+                            <td>@lin.Quantidade</td>
+                            <td>@lin.Data</td>
+                            <td>@lin.Armazem</td>
+                            <td>@lin.Localizacao</td>
+                            <td>@lin.LocalizacaoOrigem</td>
+                            <td>@lin.Lote</td>
+                            <td>@lin.EntradaSaida</td>
+                            <td>@lin.Serie</td>
+                            <td>@lin.Descricao</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    <br /><br />

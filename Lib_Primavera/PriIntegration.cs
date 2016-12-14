@@ -1210,6 +1210,51 @@ namespace FirstREST.Lib_Primavera
             return lis;
         }
 
+        public static IList<Model.LinhasStk> TransferenciasLinhas(string tipoDoc, string serie, int num)
+        {
+            StdBELista objList;
+            IList<Model.LinhasStk> lis = new List<Model.LinhasStk>();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
+                sql.Append("select TipoDoc, NumDoc, NumLinha, Quantidade, Data, Armazem, Localizacao, LocalizacaoOrigem, Lote, EntradaSaida, Serie, Descricao from LinhasSTK");
+                sql.Append("  where TipoDoc = '@1@' and Serie = '@2@' and NumDoc = '@3@' order by Quantidade, NumLinha desc");
+
+                query = sql.ToString();
+                query = query.Replace("@1@", tipoDoc);
+                query = query.Replace("@2@", serie);
+                query = query.Replace("@3@", num.ToString());
+
+                objList = PriEngine.Engine.Consulta(query);
+
+                while (!objList.NoFim())
+                {
+                    Model.LinhasStk obj = new Model.LinhasStk();
+                    obj.TipoDoc = objList.Valor("TipoDoc");
+                    obj.NumDoc = objList.Valor("NumDoc");
+                    obj.NumLinha = objList.Valor("NumLinha");
+                    obj.Quantidade = objList.Valor("Quantidade");
+                    DateTime dt = objList.Valor("Data");
+                    obj.Data = dt.ToString("dd-MM-yyyy");
+                    obj.Armazem = objList.Valor("Armazem");
+                    obj.Localizacao = objList.Valor("Localizacao");
+                    obj.LocalizacaoOrigem = objList.Valor("LocalizacaoOrigem");
+                    obj.Lote = objList.Valor("Lote");
+                    obj.EntradaSaida = objList.Valor("EntradaSaida");
+                    obj.Serie = objList.Valor("Serie");
+                    obj.Descricao = objList.Valor("Descricao");
+                    lis.Add(obj);
+                    objList.Seguinte();
+                }
+            }
+
+            return lis;
+        }
+
         //public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> )
         //{
         //    Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
