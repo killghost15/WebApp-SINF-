@@ -64,11 +64,72 @@ namespace FirstREST.Controllers
             return View("/Views/Home/Transferencia_Armazem.cshtml");
         }
 
+
         public ActionResult Documents(string tipoDoc, string serie, string estado)
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
-            ViewBag.encomendas = cont.Get(tipoDoc, serie, estado);
+            ViewBag.encomendas = cont.Get(tipoDoc, serie, estado, 0);
             return View("/Views/Home/Documents.cshtml");
+        }
+
+        public ActionResult PickingWave(string tipoDoc)
+        {
+            EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
+            ViewBag.test = cont.GetSerie(tipoDoc);
+            return View("/Views/Home/View_Waves.cshtml");
+        }
+
+        public ActionResult ViewWaves(string tipoDoc)
+        {
+            EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
+            ViewBag.test = cont.GetSerie(tipoDoc);
+            return View("/Views/Home/View_Generated_Waves.cshtml");
+        }
+
+        public ActionResult GuiaDeRemessa(string Filial, string TipoDoc, string Serie, string NumDoc, string TipoEntidade, string Entidade)
+        {
+            CriaGuiaDeRemessaController grc = new CriaGuiaDeRemessaController();
+            FirstREST.Lib_Primavera.Model.CriaGuiaDeRemessa gr = new FirstREST.Lib_Primavera.Model.CriaGuiaDeRemessa();
+            gr.Filial = Filial;
+            gr.TipoDoc = TipoDoc;
+            gr.Serie = Serie;
+            gr.NumDoc = int.Parse(NumDoc);
+            gr.TipoEntidade = TipoEntidade;
+            gr.Entidade = Entidade;
+            grc.Post(gr);
+            EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
+            ViewBag.test = cont.Get(TipoDoc, Serie, "P", 1);
+            return View("/Views/Home/PickingWave.cshtml");
+        }
+
+        public ActionResult PickingList(string tipoDoc, string serie, int numOrders)
+        {
+            PickingOrderController cont = new PickingOrderController();
+            cont.Post(tipoDoc, serie, numOrders);
+            EncomendaDeClientesPckController cont2 = new EncomendaDeClientesPckController();
+            ViewBag.test = cont2.Get(tipoDoc, serie, "P", 1);
+            return View("/Views/Home/PickingWave.cshtml");
+        }
+
+        public ActionResult PickingOrder(string id)
+        {
+            EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
+            ViewBag.encomenda = cont.Get(id);
+            return View("/Views/Home/PickingOrder.cshtml");
+        }
+
+        public ActionResult GeneratedWaves(string tipoDoc, string serie)
+        {
+            EncomendaDeClientesPckController cont2 = new EncomendaDeClientesPckController();
+            ViewBag.test = cont2.Get(tipoDoc, serie, "P", 1);
+            return View("/Views/Home/PickingWave.cshtml");
+        }
+
+        public ActionResult Encomendas(string tipoDoc, string serie, string estado)
+        {
+            EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
+            ViewBag.encomendas = cont.Get(tipoDoc, serie, estado, 2);
+            return View("/Views/Home/Encomendas.cshtml");
         }
 
         public ActionResult Transferencias(string tipoDoc)

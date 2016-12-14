@@ -744,10 +744,104 @@ namespace FirstREST.Lib_Primavera
 
         #endregion TransferenciaArmazem
 
+        #region PickingAlternativo
+
+        public static List<Model.DocVendaPCK> PickingOrder(string tipoDoc, string serie, int numOrders)
+        {
+            StdBELista objListCab;
+            StdBELista objListLin;
+            String estado = "P";
+            Model.DocVendaPCK dv = new Model.DocVendaPCK();
+            List<Model.DocVendaPCK> listdv = new List<Model.DocVendaPCK>();
+            Model.LinhaDocVendaPCK lindv = new Model.LinhaDocVendaPCK();
+            List<Model.LinhaDocVendaPCK> listlindv = new List<Model.LinhaDocVendaPCK>();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
+                string a = "SELECT top " + numOrders + " Id, Data, Entidade, TipoDoc, NumDoc, DataCarga, HoraCarga, Serie, Documento, Estado FROM cabecdoc CD inner join CabecDocStatus ST ON CD.id = ST.IdCabecDoc";
+                sql.Append(a);
+                sql.Append(" WHERE TipoDoc='@1@'");
+                sql.Append(" AND Serie='@2@'");
+                sql.Append(" AND Estado='@3@' and Picking = 0 order by NumDoc, HoraCarga asc ");
+
+                query = sql.ToString();
+                query = query.Replace("@1@", tipoDoc);
+                query = query.Replace("@2@", serie);
+                query = query.Replace("@3@", estado);
+                //query = query.Replace("@4@", numOrders.ToString());
+
+                objListCab = PriEngine.Engine.Consulta(query);
+                while (!objListCab.NoFim())
+                {
+                    GcpBEDocumentoVenda docv = new GcpBEDocumentoVenda();                    
+                    dv = new Model.DocVendaPCK();
+                    dv.Id = objListCab.Valor("Id");
+
+                    DateTime dt = objListCab.Valor("Data");
+                    dv.Data = dt.ToString("dd-MM-yyyy");
+                    dv.Entidade = objListCab.Valor("Entidade");
+                    dv.TipoDoc = objListCab.Valor("TipoDoc");
+                    int numDoc = objListCab.Valor("NumDoc");
+                    dv.NumDoc = Convert.ToString(numDoc);
+                    dv.DataCarga = objListCab.Valor("DataCarga");
+                    dv.HoraCarga = objListCab.Valor("HoraCarga");
+                    dv.Serie = objListCab.Valor("Serie");
+                    dv.Documento = objListCab.Valor("Documento");
+                    dv.Estado = objListCab.Valor("Estado");
+                    objListLin = PriEngine.Engine.Consulta("Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans, PrecUnit,(PrecUnit * LD.Quantidade+ (PrecUnit*LD.Quantidade*(TaxaIva/100))) as PrecoTotal from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "' order By NumLinha");
+                    listlindv = new List<Model.LinhaDocVendaPCK>();
+
+                    string filial = "000";
+                    PriEngine.Engine.Comercial.Vendas.ActualizaValorAtributo(filial, dv.TipoDoc, dv.Serie, numDoc, "Picking", 1);
+
+                    while (!objListLin.NoFim())
+                    {
+                        lindv = new Model.LinhaDocVendaPCK();
+                        lindv.IdCabecDoc = objListLin.Valor("idCabecDoc");
+                        int numLinha = objListLin.Valor("NumLinha");
+                        lindv.NumLinha = Convert.ToString(numLinha);
+                        lindv.Artigo = objListLin.Valor("Artigo");
+                        double quantidade = objListLin.Valor("Quantidade");
+                        lindv.Quantidade = Convert.ToString(quantidade);
+                        lindv.Seccao = objListLin.Valor("Seccao");
+                        lindv.Armazem = objListLin.Valor("Armazem");
+                        lindv.Localizacao = objListLin.Valor("Localizacao");
+                        lindv.Lote = objListLin.Valor("Lote");
+                        lindv.Descricao = objListLin.Valor("Descricao");
+                        lindv.Id = objListLin.Valor("Id");
+                        lindv.Unidade = objListLin.Valor("Unidade");
+                        double quantTrans = objListLin.Valor("QuantTrans");
+                        lindv.QuantTrans = Convert.ToString(quantTrans);
+                        lindv.EstadoTrans = objListLin.Valor("EstadoTrans");
+                        double precoUnit = objListLin.Valor("PrecUnit");
+                        precoUnit = Math.Round(precoUnit, 2);
+                        lindv.PrecUnit = Convert.ToString(precoUnit);
+                        double precoTotalLinha = objListLin.Valor("PrecoTotal");
+                        lindv.PrecoTotalLinha = Convert.ToString(precoTotalLinha);
+
+                        listlindv.Add(lindv);
+                        objListLin.Seguinte();
+                    }
+
+                    dv.LinhasDoc = listlindv;
+                    listdv.Add(dv);
+                    objListCab.Seguinte();
+                }
+            }
+
+            return listdv;
+        }
+
+        #endregion
+
         #region DocVendaPCK
 
         /* Função que devolve uma lista com todas as encomendas de uma certa série e com um certo estado */
-        public static List<Model.DocVendaPCK> Encomendas_List_PCK(string tipoDoc, string serie, string estado)
+        public static List<Model.DocVendaPCK> Encomendas_List_PCK(string tipoDoc, string serie, string estado, int picking)
         {
             StdBELista objListCab;
             StdBELista objListLin;
@@ -767,10 +861,16 @@ namespace FirstREST.Lib_Primavera
                 sql.Append(" AND Serie='@2@'");
                 sql.Append(" AND Estado='@3@'");
 
+                if(picking == 1)
+                    sql.Append(" AND Picking='@4@'");
+
                 query = sql.ToString();
                 query = query.Replace("@1@", tipoDoc);
                 query = query.Replace("@2@", serie);
                 query = query.Replace("@3@", estado);
+
+                if(picking == 1)
+                    query = query.Replace("@4@", picking.ToString());
 
                 objListCab = PriEngine.Engine.Consulta(query);
                 while (!objListCab.NoFim())
