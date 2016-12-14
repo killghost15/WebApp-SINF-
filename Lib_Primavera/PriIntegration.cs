@@ -1311,54 +1311,73 @@ namespace FirstREST.Lib_Primavera
                     List<Model.Encomenda> encomendas = new List<Model.Encomenda>();
                     Model.LinhaDaPickList art = new Model.LinhaDaPickList();
                     Model.Encomenda ecl = new Model.Encomenda();
-                    string id = "";
+                    int index = 0;
+
                     while (!objList.NoFim())
                     {
 
-                        ecl.Id = objList.Valor("LinhasDoc.IdCabecDoc");
+                        ecl.Id = objList.Valor("IdCabecDoc");
+                        if (index == 0)
+                            ecl.lista = new List<Model.LinhaDaPickList>();
 
-                        DateTime dt = objList.Valor("LinhasDoc.DataEntrega");
+                        DateTime datetempo = objList.Valor("DataEntrega");
 
-                        ecl.Data = dt;
+                        ecl.Data = datetempo;
 
 
-                        art.CodArtigo = objList.Valor("LinhasDoc.Artigo");
-                        art.IdLinha = objList.Valor("LinhasDoc.Id");
-                        art.Quantidade = objList.Valor("LinhasDoc.Quantidade");
-                        art.Localizacao = objList.Valor("LinhasDoc.Localizacao");
+                        art.CodArtigo = objList.Valor("Artigo");
+
+                        art.IdLinha = objList.Valor("Id");
+
+                        art.Quantidade = objList.Valor("Quantidade");
+
+
+
+                        art.Localizacao = objList.Valor("Localizacao");
+
                         ecl.lista.Add(art);
+
                         objList.Seguinte();
+
                         if (objList.NoFim())
                         {
                             encomendas.Add(ecl);
                         }
                         else
                         {
-                            if (id != objList.Valor("LinhasDoc.IdCabecDoc"))
+                            if (ecl.Id != objList.Valor("IdCabecDoc"))
                             {
                                 encomendas.Add(ecl);
+                                index = 0;
+                            }
+                            else
+                            {
+                                index = 1;
                             }
                         }
 
                     }
-                    DateTime min = encomendas[0].Data;
-                    int indexmin = 0;
                     List<Model.Encomenda> pickList = new List<Model.Encomenda>();
-                    //selecionar as encomendas para sofrerem o processo de picking
+                    /*  DateTime min = encomendas[0].Data;
+                      int indexmin = 0;
+                    
+                      //selecionar as encomendas para sofrerem o processo de picking
+                      for (int k = 0; k < numencomendas; k++)
+                      {
+                          for (int i = 0; i < encomendas.Count(); i++)
+                          {
+
+
+                              if (encomendas[i].Data < min && !pickList.Contains(encomendas[i]))
+                              {
+                                  min = encomendas[i].Data;
+                                  indexmin = i;
+                              }
+
+                          }*/
                     for (int k = 0; k < numencomendas; k++)
                     {
-                        for (int i = 0; i < encomendas.Count(); i++)
-                        {
-
-
-                            if (encomendas[i].Data < min && !pickList.Contains(encomendas[i]))
-                            {
-                                min = encomendas[i].Data;
-                                indexmin = i;
-                            }
-
-                        }
-                        pickList.Add(encomendas[indexmin]);
+                        pickList.Add(encomendas[k]);
                     }
 
 
@@ -1366,15 +1385,28 @@ namespace FirstREST.Lib_Primavera
                     StringBuilder sql1 = new StringBuilder();
                     string query1 = string.Empty;
                     int proxid;
-                    //
-                    StdBELista s = PriEngine.Engine.Consulta("select Max(Id) as proxid from PickingList");
-                    if (s.Vazia())
+
+                    StdBELista bomba = new StdBELista();
+                    bomba = PriEngine.Engine.Consulta("select Max(Id) as proxid from PickingList");
+                    StdBELista s = new StdBELista();
+                    s = PriEngine.Engine.Consulta("select * from PickingList");
+                    try
+                    {
+                        if (s.Vazia())
+                        {
+                            proxid = 0;
+                            proxid++;
+                        }
+                        else
+                        {
+                            proxid = bomba.Valor("proxid");
+                            proxid++;
+                        }
+
+                    }
+                    catch (Exception e)
                     {
                         proxid = 0;
-                    }
-                    else
-                    {
-                        proxid = s.Valor("proxid");
                         proxid++;
                     }
 
@@ -1386,22 +1418,45 @@ namespace FirstREST.Lib_Primavera
                         {
                             sql1 = new StringBuilder();
                             query1 = string.Empty;
-                            sql1.Append("insert into PickingList (Id,Localizacao,Artigo,Quantidade,IdECL,EstadoTratado) values (@5@,'@1@','@2@',@3@,'@4@',0");
+                            sql1.Append("insert into PickingList (Id,Localizacao,Artigo,IdECL,Quantidade,EstadoTratado) values (@1@,'@2@','@3@','@4@',@5@,0)");
                             query1 = sql1.ToString();
+                            query1 = query1.Replace("@1@", proxid.ToString());
+                            query1 = query1.Replace("@2@", pickList[l].lista[b].Localizacao);
+                            query1 = query1.Replace("@3@", pickList[l].lista[b].CodArtigo);
 
-                            query1 = query1.Replace("@1@", pickList[l].lista[b].Localizacao);
-                            query1 = query1.Replace("@2@", pickList[l].lista[b].CodArtigo);
-
-                            query1 = query1.Replace("@3@", pickList[l].lista[b].Quantidade.ToString());
-                            query1 = query1.Replace("@4@", pickList[l].Id);
-                            query1 = query1.Replace("@5@", proxid.ToString());
+                            string[] deli = { "{", "}" };
+                            string[] a = pickList[l].Id.Split(deli, System.StringSplitOptions.RemoveEmptyEntries);
+                            int alphatest = a.Length;
+                            query1 = query1.Replace("@4@", a[0]);
 
 
 
-                            PriEngine.Engine.Consulta(query1);
+
+
+                            string nova = Convert.ToString(pickList[l].lista[b].Quantidade);
+
+                            query1 = query1.Replace("@5@", nova);
+
+
+
+
+
+                            // PriEngine.Engine.Consulta(query1);
+                            System.Data.SqlClient.SqlConnection sqlConnection1 =
+                        new System.Data.SqlClient.SqlConnection("Data Source=user-pc\\PRIMAVERA;Initial Catalog=PRIDEMOSINF;Integrated Security=True");
+
+                            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                            cmd.CommandType = System.Data.CommandType.Text;
+                            cmd.CommandText = query1;
+                            cmd.Connection = sqlConnection1;
+
+                            sqlConnection1.Open();
+                            cmd.ExecuteNonQuery();
+                            sqlConnection1.Close();
 
 
                         }
+
 
                     }
 
