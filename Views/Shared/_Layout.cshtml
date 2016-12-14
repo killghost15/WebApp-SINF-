@@ -81,7 +81,7 @@
                 $("body").append("<div id='loader'><div class='spinner'></div></div>").fadeIn();
             });
 
-            $("button").click(function () {
+            $("button:not(#filterbutton").click(function () {
                 $("body").append("<div id='loader'><div class='spinner'></div></div>").fadeIn();
             });
 

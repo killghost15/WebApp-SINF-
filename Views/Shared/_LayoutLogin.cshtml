@@ -18,6 +18,23 @@
 @RenderBody()
 
 @RenderSection("scripts", required: false)
+    <script>
 
+        $(function () {
+
+            $("a").click(function () {
+                $("body").append("<div id='loader'><div class='spinner'></div></div>").fadeIn();
+            });
+
+            $("button").click(function () {
+                $("body").append("<div id='loader'><div class='spinner'></div></div>").fadeIn();
+            });
+
+            $(".table-hover").click(function () {
+                $("body").append("<div id='loader'><div class='spinner'></div></div>").fadeIn();
+            });
+
+        });
+    </script>
 </body>
 </html>

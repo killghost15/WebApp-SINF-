@@ -288,7 +288,15 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\carousel.css" />
+    <Content Include="Content\login.css" />
+    <Content Include="Content\navbar_dropdown.css" />
+    <Content Include="Content\SINFcss\carousel.css" />
+    <Content Include="Content\SINFcss\login.css" />
+    <Content Include="Content\SINFcss\navbar_dropdown.css" />
+    <Content Include="Content\SINFcss\table_filter.css" />
     <Content Include="Content\styles.css" />
+    <Content Include="Content\table_filter.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -425,6 +433,7 @@
     <Content Include="Views\Home\LinhasTransferencia.cshtml" />
     <Content Include="Views\Home\Artigos.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
