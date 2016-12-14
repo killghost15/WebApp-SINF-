@@ -21,20 +21,24 @@
                         <th><input type="text" class="form-control" placeholder="SKT Mínimo" disabled></th>
                         <th><input type="text" class="form-control" placeholder="SKT Máximo" disabled></th>
                         <th><input type="text" class="form-control" placeholder="SKT Atual" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Localização" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Localizações" disabled></th>
                     </tr>
                 </thead>
                 <tbody class="table-hover">
-                    @foreach (var artigo in ViewBag.artigos)
-                    {
-                        <tr onmouseover="" style="cursor: pointer;">
-                            <td>@artigo.CodArtigo</td>
-                            <td>@artigo.DescArtigo</td>
-                            <td>@artigo.STKMinimo</td>
-                            <td>@artigo.STKMaximo</td>
-                            <td>@artigo.STKAtual</td>
-                            <td>@artigo.localizacao</td>
-                        </tr>
+                    @{
+                        int index = 0;
+                        foreach (var artigo in ViewBag.artigos)
+                        {
+                            <tr onmouseover="" style="cursor: pointer;">
+                                <td>@artigo.CodArtigo</td>
+                                <td>@artigo.DescArtigo</td>
+                                <td>@artigo.STKMinimo</td>
+                                <td>@artigo.STKMaximo</td>
+                                <td>@artigo.STKAtual</td>
+                                <td>@ViewBag.localizacoesReal[index]</td>
+                            </tr>
+                            index++;
+                        }
                     }
                 </tbody>
             </table>

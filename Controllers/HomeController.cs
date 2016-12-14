@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Text;
 
 namespace FirstREST.Controllers
 {
@@ -90,7 +91,43 @@ namespace FirstREST.Controllers
         public ActionResult Artigos()
         {
             ArtigosController cont = new ArtigosController();
-            ViewBag.artigos = cont.Get();
+            var lista_artigos = cont.Get();
+            ViewBag.artigos = lista_artigos;
+
+            ArtigoArmazemController cont2 = new ArtigoArmazemController();
+            var lista_artigoArmazem = cont2.Get();
+            var lista_localizacoesReal = new List<string>();
+
+            foreach (var artigo in lista_artigos)
+            {
+                var lista_localizacoesTemp = new List<string>();
+
+                foreach (var artigoArmazem in lista_artigoArmazem)
+                {
+                    if (artigo.CodArtigo == artigoArmazem.CodArtigo)
+                    {
+                        lista_localizacoesTemp.Add(artigoArmazem.Localizacao);
+                    }
+                }
+
+                StringBuilder localizacoes_stringBuilder = new StringBuilder();
+
+                Console.Write(lista_localizacoesTemp.Count());
+                Console.Write(lista_artigos.Count());
+
+                for (var i = 0; i < lista_localizacoesTemp.Count(); i++)
+                {
+                    localizacoes_stringBuilder.Append(lista_localizacoesTemp[i]);
+                    if ((i + 1) != lista_localizacoesTemp.Count())
+                        localizacoes_stringBuilder.Append("; ");
+                }
+
+                string localizacoes_string = localizacoes_stringBuilder.ToString();
+                lista_localizacoesReal.Add(localizacoes_string);
+            }
+
+            ViewBag.localizacoesReal = lista_localizacoesReal;
+
             return View("/Views/Home/Artigos.cshtml");
         }
 
