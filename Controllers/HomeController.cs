@@ -11,6 +11,10 @@ namespace FirstREST.Controllers
     {
         public ActionResult Index()
         {
+            if (Session["LoggedIn"] == null)
+            {
+                return View("/Views/Home/Login.cshtml");
+            }
             return View("/Views/Home/Index.cshtml");
         }
 
