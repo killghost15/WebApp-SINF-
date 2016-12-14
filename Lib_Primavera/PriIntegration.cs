@@ -867,7 +867,7 @@ namespace FirstREST.Lib_Primavera
                     dv.Serie = objListCab.Valor("Serie");
                     dv.Documento = objListCab.Valor("Documento");
                     dv.Estado = objListCab.Valor("Estado");
-                    objListLin = PriEngine.Engine.Consulta("Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans,PrecUnit,(PrecUnit * LD.Quantidade+ (PrecUnit*LD.Quantidade*(TaxaIva/100))) as PrecoTotalLinha from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "' order By NumLinha");
+                    objListLin = PriEngine.Engine.Consulta("Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans,PrecUnit,CONVERT(DECIMAL(10,2),(PrecUnit * LD.Quantidade+ (PrecUnit*LD.Quantidade*(TaxaIva/100)))) as PrecoTotalLinha from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "' order By NumLinha");
                     listlindv = new List<Model.LinhaDocVendaPCK>();
 
                     while (!objListLin.NoFim())
@@ -889,11 +889,8 @@ namespace FirstREST.Lib_Primavera
                         double quantTrans = objListLin.Valor("QuantTrans");
                         lindv.QuantTrans = Convert.ToString(quantTrans);
                         lindv.EstadoTrans = objListLin.Valor("EstadoTrans");
-                        double precoUnit = objListLin.Valor("PrecUnit");
-                        precoUnit = Math.Round(precoUnit, 2);
-                        lindv.PrecUnit = Convert.ToString(precoUnit);
-                        double precoTotalLinha = objListLin.Valor("PrecoTotalLinha");
-                        lindv.PrecoTotalLinha = Convert.ToString(precoTotalLinha);
+                        lindv.PrecUnit = Convert.ToString(objListLin.Valor("PrecUnit"));
+                        lindv.PrecoTotalLinha = Convert.ToString(objListLin.Valor("PrecoTotalLinha"));
 
                         listlindv.Add(lindv);
                         objListLin.Seguinte();
@@ -947,12 +944,11 @@ namespace FirstREST.Lib_Primavera
                     dv.Serie = objListCab.Valor("Serie");
                     dv.Documento = objListCab.Valor("Documento");
                     dv.Estado = objListCab.Valor("Estado");
-                    objListLin = PriEngine.Engine.Consulta("select Sum(PrecoTotalLinha) AS PrecoTotal from (Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans,(PrecUnit * LD.Quantidade+ (PrecUnit*LD.Quantidade*(TaxaIva/100))) as PrecoTotalLinha from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "') as t");
+                    objListLin = PriEngine.Engine.Consulta("select CONVERT(DECIMAL(10,2),Sum(PrecoTotalLinha)) AS PrecoTotal from (Select IdCabecDoc, NumLinha, Artigo, LD.Quantidade, Seccao, Armazem, Localizacao, Lote, Descricao, Id, Unidade, QuantTrans, EstadoTrans,CONVERT(DECIMAL(10,2),(PrecUnit * LD.Quantidade+ (PrecUnit*LD.Quantidade*(TaxaIva/100)))) as PrecoTotalLinha from LinhasDoc LD inner join LinhasDocStatus LDS ON LD.id = LDS.IdLinhasDoc AND IdCabecDoc='" + dv.Id + "') as t");
 
                     while (!objListLin.NoFim())
                     {
-                        double preco = objListLin.Valor("PrecoTotal");
-                        precoTotal = Convert.ToString(preco);
+                        precoTotal = Convert.ToString(objListLin.Valor("PrecoTotal"));
                         objListLin.Seguinte();
                     }
 
