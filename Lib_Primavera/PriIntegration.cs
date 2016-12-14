@@ -263,13 +263,24 @@ namespace FirstREST.Lib_Primavera
 
             if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
             {
-                objList = PriEngine.Engine.Comercial.Artigos.LstArtigos();
+                //objList = PriEngine.Engine.Comercial.Artigos.LstArtigos();
+
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                sql.Append("select Artigo, Descricao, STKMinimo, STKMaximo, STKActual from Artigo");
+
+                query = sql.ToString();
+                objList = PriEngine.Engine.Consulta(query);
 
                 while (!objList.NoFim())
                 {
                     art = new Model.Artigo();
-                    art.CodArtigo = objList.Valor("artigo");
-                    art.DescArtigo = objList.Valor("descricao");
+                    art.CodArtigo = objList.Valor("Artigo");
+                    art.DescArtigo = objList.Valor("Descricao");
+                    art.STKMinimo = objList.Valor("STKMinimo");
+                    art.STKMaximo = objList.Valor("STKMaximo");
+                    art.STKAtual = objList.Valor("STKActual");
 
                     listArts.Add(art);
                     objList.Seguinte();

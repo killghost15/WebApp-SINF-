@@ -423,6 +423,7 @@
     <Content Include="Views\Home\View_Orders.cshtml" />
     <Content Include="Views\Home\View_Transferencias.cshtml" />
     <Content Include="Views\Home\LinhasTransferencia.cshtml" />
+    <Content Include="Views\Home\Artigos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

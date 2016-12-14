@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Artigos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h3 class="panel-title">Artigos</h3>
+                <div class="pull-right">
+                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="filters">
+                        <th><input type="text" class="form-control" placeholder="Artigo" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Descrição" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="SKT Mínimo" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="SKT Máximo" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="SKT Atual" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Localização" disabled></th>
+                    </tr>
+                </thead>
+                <tbody class="table-hover">
+                    @foreach (var artigo in ViewBag.artigos)
+                    {
+                        <tr onmouseover="" style="cursor: pointer;">
+                            <td>@artigo.CodArtigo</td>
+                            <td>@artigo.DescArtigo</td>
+                            <td>@artigo.STKMinimo</td>
+                            <td>@artigo.STKMaximo</td>
+                            <td>@artigo.STKAtual</td>
+                            <td>@artigo.localizacao</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<br /><br />

@@ -87,6 +87,13 @@ namespace FirstREST.Controllers
             return View("/Views/Home/View_Orders.cshtml");
         }
 
+        public ActionResult Artigos()
+        {
+            ArtigosController cont = new ArtigosController();
+            ViewBag.artigos = cont.Get();
+            return View("/Views/Home/Artigos.cshtml");
+        }
+
         public ActionResult Encomenda(string id)
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
