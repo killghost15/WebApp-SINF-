@@ -151,6 +151,12 @@ namespace FirstREST.Controllers
             return View("/Views/Home/Index.cshtml");
         }
 
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            return View("/Views/Home/Login.cshtml");
+        }
+
         [System.Web.Mvc.HttpPost]
         public void Index(String Email, String Password)
         {
