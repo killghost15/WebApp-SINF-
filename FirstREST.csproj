@@ -417,10 +417,10 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Encomendas.cshtml" />
-    <Content Include="Views\Home\Encomenda.cshtml" />
+    <Content Include="Views\Home\Documents.cshtml" />
+    <Content Include="Views\Home\Document.cshtml" />
     <Content Include="Views\Home\Transferencia_Armazem.cshtml" />
-    <Content Include="Views\Home\View_Documents.cshtml" />
+    <Content Include="Views\Home\Choose_Documents.cshtml" />
     <Content Include="Views\Home\View_Transferencias.cshtml" />
     <Content Include="Views\Home\LinhasTransferencia.cshtml" />
     <Content Include="Views\Home\Artigos.cshtml" />

@@ -59,11 +59,11 @@ namespace FirstREST.Controllers
             return View("/Views/Home/Transferencia_Armazem.cshtml");
         }
 
-        public ActionResult Encomendas(string tipoDoc, string serie, string estado)
+        public ActionResult Documents(string tipoDoc, string serie, string estado)
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
             ViewBag.encomendas = cont.Get(tipoDoc, serie, estado);
-            return View("/Views/Home/Encomendas.cshtml");
+            return View("/Views/Home/Documents.cshtml");
         }
 
         public ActionResult Transferencias(string tipoDoc)
@@ -80,11 +80,11 @@ namespace FirstREST.Controllers
             return View("/Views/Home/LinhasTransferencia.cshtml");
         }
 
-        public ActionResult Documents()
+        public ActionResult Choose_Documents()
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
             ViewBag.test = cont.GetSerie();
-            return View("/Views/Home/View_Documents.cshtml");
+            return View("/Views/Home/Choose_Documents.cshtml");
         }
 
         public ActionResult Artigos()
@@ -94,12 +94,12 @@ namespace FirstREST.Controllers
             return View("/Views/Home/Artigos.cshtml");
         }
 
-        public ActionResult Encomenda(string id)
+        public ActionResult Document(string id)
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
             ViewBag.encomenda = cont.Get(id);
             ViewBag.precoTotal = cont.GetTotalPrice(id);
-            return View("/Views/Home/Encomenda.cshtml");
+            return View("/Views/Home/Document.cshtml");
         }
 
         public ActionResult Login()
