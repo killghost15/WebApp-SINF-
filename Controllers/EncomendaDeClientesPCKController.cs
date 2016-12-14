@@ -36,5 +36,10 @@ namespace FirstREST.Controllers
             return Lib_Primavera.PriIntegration.EncomendaSerie(tipoDoc);
         }
 
+        public List<string> GetSerie()
+        {
+            return Lib_Primavera.PriIntegration.EncomendaSerie();
+        }
+
     }
 }

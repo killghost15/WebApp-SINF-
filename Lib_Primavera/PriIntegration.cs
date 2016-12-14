@@ -994,6 +994,35 @@ namespace FirstREST.Lib_Primavera
             return lis;
         }
 
+        public static List<string> EncomendaSerie()
+        {
+            StdBELista objList;
+            List<string> lis = new List<string>();
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
+                sql.Append("SELECT DISTINCT Serie from CabecDoc");
+
+                query = sql.ToString();
+
+                objList = PriEngine.Engine.Consulta(query);
+
+                while (!objList.NoFim())
+                {
+                    string temp = "";
+                    temp = objList.Valor("Serie");
+                    lis.Add(temp);
+                    objList.Seguinte();
+                }
+            }
+
+            return lis;
+        }
+
         #endregion
 
         #region GuiaDeRemessa

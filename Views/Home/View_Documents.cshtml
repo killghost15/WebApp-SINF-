@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>View Orders</h2>
+<h2>View Documents</h2>
 
 <style type="text/css">
     /* Adjust feedback icon position */
@@ -18,9 +18,11 @@
     <div class="form-group">
         <label class="col-xs-3 control-label">Tipo de Documento</label>
         <div class="col-xs-5 selectContainer" style="width: 65%">
-            <input type="text" class="form-control" name="tipoDoc" id="tipoDocDisable" disabled value="ECL" />
+            <select class="form-control" name="tipoDoc" id="tipoDoc">
+                <option value="ECL">Encomenda de Cliente</option>
+                <option value="GR">Guia de Remessa</option>
+            </select>
         </div>
-        <input name="tipoDoc" id="tipoDoc" hidden value="ECL" />
     </div>
     <div class="form-group">
         <label class="col-xs-3 control-label">Serie</label>

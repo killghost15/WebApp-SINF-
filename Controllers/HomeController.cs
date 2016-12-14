@@ -80,11 +80,11 @@ namespace FirstREST.Controllers
             return View("/Views/Home/LinhasTransferencia.cshtml");
         }
 
-        public ActionResult Orders(string tipoDoc)
+        public ActionResult Documents()
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();
-            ViewBag.test = cont.GetSerie(tipoDoc);
-            return View("/Views/Home/View_Orders.cshtml");
+            ViewBag.test = cont.GetSerie();
+            return View("/Views/Home/View_Documents.cshtml");
         }
 
         public ActionResult Artigos()
