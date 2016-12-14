@@ -66,6 +66,19 @@ namespace FirstREST.Controllers
             return View("/Views/Home/Encomendas.cshtml");
         }
 
+        public ActionResult Transferencias(string tipoDoc)
+        {
+            TransfItemPckAreaController cont = new TransfItemPckAreaController();
+            ViewBag.test2 = cont.GetTransferencias(tipoDoc);
+            return View("/Views/Home/View_Transferencias.cshtml");
+        }
+
+        public ActionResult TransferenciasLinhas(string tipoDoc, string serie, int num)
+        {
+            
+            return View("/Views/Home/index");
+        }
+
         public ActionResult Orders(string tipoDoc)
         {
             EncomendaDeClientesPckController cont = new EncomendaDeClientesPckController();

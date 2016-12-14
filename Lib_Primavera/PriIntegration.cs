@@ -1177,6 +1177,39 @@ namespace FirstREST.Lib_Primavera
             return lis;
         }
 
+        public static IList<Model.TransferenciasObj> TransferenciaNumsSerie(string tipoDoc)
+        {
+            StdBELista objList;
+            IList<Model.TransferenciasObj> lis = new List<Model.TransferenciasObj>();
+            int temp = 0;
+
+            if (PriEngine.InitializeCompany(FirstREST.Properties.Settings.Default.Company.Trim(), FirstREST.Properties.Settings.Default.User.Trim(), FirstREST.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                StringBuilder sql = new StringBuilder();
+                string query = string.Empty;
+
+                //  TipoDoc='ECL' Serie='PCK' Estado=['P' | 'Q']
+                sql.Append("select Serie, count(NumDoc) as num from CabecStk");
+                sql.Append(" where TipoDoc = '@1@' group by Serie");
+
+                query = sql.ToString();
+                query = query.Replace("@1@", tipoDoc);
+
+                objList = PriEngine.Engine.Consulta(query);
+
+                while (!objList.NoFim())
+                {
+                    Model.TransferenciasObj obj = new Model.TransferenciasObj();
+                    obj.Num = objList.Valor("num");
+                    obj.Serie = objList.Valor("Serie");
+                    lis.Add(obj);
+                    objList.Seguinte();
+                }
+            }
+
+            return lis;
+        }
+
         //public static Model.RespostaErro TransfereItemPickingArea(IList<Model.LinhaDocVendaPCK> )
         //{
         //    Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();

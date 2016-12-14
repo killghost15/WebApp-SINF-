@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "View_Transferencias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View Transferencias</h2>
+
+<style type="text/css">
+    /* Adjust feedback icon position */
+    #productForm .selectContainer .form-control-feedback,
+    #productForm .inputGroupContainer .form-control-feedback {
+        right: -15px;
+    }
+</style>
+
+<form id="transfForm" action="/Home/TranferenciasLinhas" method="GET" class="form-horizontal">
+    <br /><br />
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Tipo de Documento</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <input type="text" class="form-control" name="tipoDoc" id="tipoDocDisable" disabled value="TRA" />
+        </div>
+        <input name="tipoDoc" id="tipoDoc" hidden value="TRA" />
+    </div>
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Serie</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <select class="form-control" name="serie" id="serie">
+                <option value="0">Choose Serie</option>
+                @foreach (var artigo in ViewBag.test2)
+                {
+                    <option value="@artigo.Serie">@artigo.Serie</option>
+                }
+            </select>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#serie').change(function () {
+                var s = $('#serie').val();
+                jScriptArray = [];
+                var array = @Html.Raw(Json.Encode(@ViewBag.test2));
+                $('#num').find('option').remove();
+                for(var i = 0; i < array.length; i++) {
+                    jScriptArray[i] = array[i];
+                    if(s === jScriptArray[i].Serie){
+                        var j = jScriptArray[i].Num;
+                        for(j; j>0; j--)
+                            $('#num').append('<option>' + j + '</option>');
+                        break;
+                    }                       
+                }
+            });
+        });
+    </script>
+    <div class="form-group">
+        <label class="col-xs-3 control-label">Doc Number</label>
+        <div class="col-xs-5 selectContainer" style="width: 65%">
+            <select class="form-control" name="num" id="num">
+ 
+            </select>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-xs-5 col-xs-offset-3">
+            <button type="submit" class="btn btn-default">View</button>
+        </div>
+    </div>
+</form>
