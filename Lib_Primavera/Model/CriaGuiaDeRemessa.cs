@@ -20,5 +20,6 @@ namespace FirstREST.Lib_Primavera.Model
         public string Documento { get; set; }
 
         public string TipoEntidade { get; set; }
+
     }
 }
