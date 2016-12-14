@@ -29,7 +29,7 @@
                         <th><input type="text" class="form-control" placeholder="PrecoTotal" disabled></th>
                     </tr>
                 </thead>
-                <tbody class="table-hover">
+                <tbody>
                     @foreach (var produto in ViewBag.encomenda[0].LinhasDoc) {
                         <tr>
                             <td>@produto.Artigo</td>
